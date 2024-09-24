@@ -16,20 +16,20 @@ const titik = (x, y, color) => {
   ctx.putImageData(image_data, 0, 0);
 };
 
-// contoh 1 garis x
-for (let i = 0; i < 100; i++) {
-  titik(100 + i, 100, { r: 100 });
-}
+// // contoh 1 garis x
+// for (let i = 0; i < 100; i++) {
+//   titik(100 + i, 100, { r: 100 });
+// }
 
-// contoh 2 garis y
-for (let i = 0; i < 100; i++) {
-  titik(100, 100 + i, { r: 100 });
-}
+// // contoh 2 garis y
+// for (let i = 0; i < 100; i++) {
+//   titik(100, 100 + i, { r: 100 });
+// }
 
-// contoh 3 garis x = s
-for (let i = 0; i < 100; i++) {
-  titik(100 + i, 100 + i, { r: 100 });
-}
+// // contoh 3 garis x = s
+// for (let i = 0; i < 100; i++) {
+//   titik(100 + i, 100 + i, { r: 100 });
+// }
 
 // membuat gradient miring garis
 function dda_line(x1, y1, x2, y2, color) {
@@ -74,6 +74,28 @@ function dda_line(x1, y1, x2, y2, color) {
 }
 
 // implementasi
-dda_line(0, 0, 100, 100, { g: 100 });
-dda_line(0, 200, 100, 100, { g: 100 });
-dda_line(200, 0, 100, 200, { g: 100 });
+// dda_line(0, 0, 100, 100, { g: 100 });
+// dda_line(0, 200, 100, 100, { g: 100 });
+// dda_line(200, 0, 100, 200, { g: 100 });
+
+// Test 1 bikin segitiga 8 //
+// // buat garis mendatar x
+// dda_line(0, c_handler.height / 2, c_handler.width, c_handler.height / 2, 0);
+
+// // buat garis mendatar y
+// dda_line(c_handler.width / 2, 0, c_handler.width / 2, c_handler.height, 0);
+
+// // buat garis miring 1
+// dda_line(0, 0, c_handler.width, c_handler.height, 0);
+
+// // buat garis miring 2
+// dda_line(c_handler.width, 0, 0, c_handler.height, 0);
+
+// Buat garis banyak bewarna //
+for (let i = 0; i < 134; i++) {
+  let randomTinggi = Math.ceil(Math.random() * 250) + 101;
+  let randomR = Math.ceil(Math.random() * 255) + 1;
+  let randomG = Math.ceil(Math.random() * 255) + 1;
+  let randomB = Math.ceil(Math.random() * 255) + 1;
+  dda_line(i * 3, 400, i * 3, randomTinggi, { r: randomR, g: randomG, b: randomB });
+}
