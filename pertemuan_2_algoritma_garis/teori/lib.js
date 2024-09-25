@@ -1,4 +1,3 @@
-// Mengambil elemen canvas dan konteksnya
 export let image_data;
 export let ctx;
 export let c_handler;
@@ -23,43 +22,45 @@ export const titik = (x, y, color) => {
 };
 
 // membuat gradient miring garis
-export const dda_line = (x1, y1, x2, y2, color) => {
+export const garis = (x1, y1, x2, y2, color) => {
   let dx = x2 - x1;
   let dy = y2 - y1;
 
-  if (dx > dy) {
+  if (Math.abs(dx) >= Math.abs(dy)) {
     // jalan di x
-    if (x2 > x1) {
+    if (x2 >= x1) {
       // ke kanan
       let y = y1;
-      for (let x = 0; x < x2; x++) {
+      for (let x = x1; x <= x2; x++) {
+        titik(x, Math.round(y), color);
         y += dy / Math.abs(dx);
-        titik(x, y, color);
       }
     } else {
       // ke kiri
       let y = y1;
-      for (let x = 0; x > x2; x--) {
-        y += dy / Math.abs(dx);
-        titik(x, y, color);
+      for (let x = x1; x >= x2; x--) {
+        titik(x, Math.round(y), color);
+        y -= dy / Math.abs(dx);
       }
     }
   } else {
     // jalan di y
-    if (y2 > y1) {
-      // ke kanan
+    if (y2 >= y1) {
+      // ke bawah
       let x = x1;
-      for (let y = 0; y < y2; y++) {
+      for (let y = y1; y <= y2; y++) {
+        titik(Math.round(x), y, color);
         x += dx / Math.abs(dy);
-        titik(x, y, color);
       }
     } else {
-      // ke kiri
+      // ke atas
       let x = x1;
-      for (let y = 0; y > y2; y--) {
-        x += dx / Math.abs(dy);
-        titik(x, y, color);
+      for (let y = y1; y >= y2; y--) {
+        titik(Math.round(x), y, color);
+        x -= dx / Math.abs(dy);
       }
     }
   }
 };
+
+export const polyLine = (arr) => {};
