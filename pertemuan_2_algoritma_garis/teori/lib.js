@@ -1,3 +1,5 @@
+import { Kotak } from "./Kotak.js";
+
 export let image_data;
 export let ctx;
 export let c_handler;
@@ -64,6 +66,7 @@ export const garis = (x1, y1, x2, y2, color) => {
   ctx.putImageData(image_data, 0, 0);
 };
 
+// NOMOR 4 //
 export const polyLine = (arr) => {
   console.info(arr.length);
 
@@ -77,6 +80,7 @@ export const polyLine = (arr) => {
   }
 };
 
+// NOMOR 5 //
 export const polygon = (arr) => {
   for (let i = 0; i < arr.length - 1; i++) {
     let x1 = arr[i][0];
@@ -97,7 +101,6 @@ export const polygon = (arr) => {
 };
 
 // NOMOR 6 //
-
 document.reset = () => {
   let new_image_data = ctx.createImageData(c_handler.width, c_handler.height);
   image_data = new_image_data;
@@ -135,4 +138,20 @@ export const polyLineInteraktif = (e, color) => {
   garis(x, y, clickedX, clickedY, color);
   x = clickedX;
   y = clickedY;
+};
+
+// NOMOR 7 //
+//1. Buatlah sebuah  fungsi yang membuat kotak isi (dari garis, prototipe function bebas)
+export const kotakIsi = (x, y, s, color) => {
+  for (let i = 0; i < s; i++) {
+    garis(x, y + i, x + s, y + i, color);
+    garis(x + i, y, x + i, y + s, color);
+  }
+};
+
+// 2. buatlah sebuah kotak dilayar yang apabila di klik akan di highlight bila di klik lagi highlight akan hilang
+export const kotak = new Kotak(ctx, 100, 100, 50);
+
+export const draw = () => {
+  kotak.draw();
 };

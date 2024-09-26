@@ -71,16 +71,35 @@ let x = [
 
 // NOMOR 6
 // Buat fungsi interaktif Polyline
+// lib.c_handler.addEventListener("click", (e) => {
+//   if (lib.warna == "merah") {
+//     lib.polyLineInteraktif(e, { r: 100 });
+//   } else if (lib.warna == "biru") {
+//     lib.polyLineInteraktif(e, { b: 100 });
+//   } else if (lib.warna == "kuning") {
+//     lib.polyLineInteraktif(e, { r: 100, g: 100 });
+//   } else if (lib.warna == "hijau") {
+//     lib.polyLineInteraktif(e, { g: 100 });
+//   } else {
+//     lib.polyLineInteraktif(e, 0);
+//   }
+// });
+
+// NOMOR 7
+//1.  Buatlah sebuah  fungsi yang membuat kotak isi (dari garis, prototipe function bebas)
+// Mohon tunggu beberapa detik untuk melihat hasil
+// lib.kotakIsi(50, 50, 50, 0);
+
+// 2.
 lib.c_handler.addEventListener("click", (e) => {
-  if (lib.warna == "merah") {
-    lib.polyLineInteraktif(e, { r: 100 });
-  } else if (lib.warna == "biru") {
-    lib.polyLineInteraktif(e, { b: 100 });
-  } else if (lib.warna == "kuning") {
-    lib.polyLineInteraktif(e, { r: 100, g: 100 });
-  } else if (lib.warna == "hijau") {
-    lib.polyLineInteraktif(e, { g: 100 });
-  } else {
-    lib.polyLineInteraktif(e, 0);
+  const rect = lib.c_handler.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  if (lib.kotak.isClicked(x, y)) {
+    lib.kotak.toggleHighlight();
+    lib.draw();
   }
 });
+
+lib.draw();
