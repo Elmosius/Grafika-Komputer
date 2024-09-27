@@ -150,3 +150,43 @@ export const kotakIsi = (x, y, s, color) => {
 
 // 2. buatlah sebuah kotak dilayar yang apabila di klik akan di highlight bila di klik lagi highlight akan hilang
 // export const kotak = new Kotak(ctx, 100, 100, 50);
+export const kotakIsiHighLight = (x, y, s, color) => {
+  let isHighLighted = false;
+
+  const gambarKotak = () => {
+    let new_image_data = ctx.createImageData(c_handler.width, c_handler.height);
+    image_data = new_image_data;
+
+    ctx.putImageData(image_data, 0, 0);
+
+    kotakIsi(x, y, s, color);
+    if (isHighLighted) {
+      kotakIsi(x, y, s + 20, { r: 255 });
+      kotakIsi(x, y, s, color);
+    }
+  };
+
+  c_handler.addEventListener("click", (e) => {
+    const clickX = e.offsetX;
+    const clickY = e.offsetY;
+
+    if (clickX >= x - s / 2 && clickX <= x + s / 2 && clickY >= y - s / 2 && clickY <= y + s / 2) {
+      isHighLighted = !isHighLighted;
+      gambarKotak();
+    }
+  });
+  gambarKotak();
+};
+
+// 3. Bagimana kira kira membuat garis yang tebalnya lebih dari 1 pixel ? apakah ada cara yang terpikir ? cobalah membuat sebuah garis tebal pada canvas. (metodenya bebas tapi menggunakan primitif yang dibuat sendiri ).
+// Memakai bantuan chatGPT
+export const garisTebal = (x1, y1, x2, y2, color, tebal) => {
+  const halfThickness = tebal / 2;
+  const angle = Math.atan2(y2 - y1, x2 - x1);
+  const offsetX = Math.sin(angle) * halfThickness;
+  const offsetY = Math.cos(angle) * halfThickness;
+
+  for (let i = -halfThickness; i <= halfThickness; i++) {
+    garis(x1 + offsetX * i, y1 - offsetY * i, x2 + offsetX * i, y2 - offsetY * i, color);
+  }
+};
