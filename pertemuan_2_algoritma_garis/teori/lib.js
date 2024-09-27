@@ -181,12 +181,26 @@ export const kotakIsiHighLight = (x, y, s, color) => {
 // 3. Bagimana kira kira membuat garis yang tebalnya lebih dari 1 pixel ? apakah ada cara yang terpikir ? cobalah membuat sebuah garis tebal pada canvas. (metodenya bebas tapi menggunakan primitif yang dibuat sendiri ).
 // Memakai bantuan chatGPT
 export const garisTebal = (x1, y1, x2, y2, color, tebal) => {
-  const halfThickness = tebal / 2;
-  const angle = Math.atan2(y2 - y1, x2 - x1);
-  const offsetX = Math.sin(angle) * halfThickness;
-  const offsetY = Math.cos(angle) * halfThickness;
+  const t = tebal / 2;
+  const sudut = Math.atan2(y2 - y1, x2 - x1);
+  const offsetX = Math.sin(sudut) * t;
+  const offsetY = Math.cos(sudut) * t;
 
-  for (let i = -halfThickness; i <= halfThickness; i++) {
+  for (let i = -t; i <= t; i++) {
     garis(x1 + offsetX * i, y1 - offsetY * i, x2 + offsetX * i, y2 - offsetY * i, color);
   }
+};
+
+///////////////////////////////////////
+/////// Pertemuan 2 - Praktikkum /////////
+//////////////////////////////////////
+export const segitigaKotakInteraktif = () => {
+  const points = [
+    [100, 100],
+    [200, 100],
+    [150, 200],
+  ];
+
+  let selectedBox = null;
+  
 };
