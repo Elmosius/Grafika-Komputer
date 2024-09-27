@@ -1,5 +1,3 @@
-import { Kotak } from "./Kotak.js";
-
 export let image_data;
 export let ctx;
 export let c_handler;
@@ -30,36 +28,36 @@ export const garis = (x1, y1, x2, y2, color) => {
 
   if (Math.abs(dx) > Math.abs(dy)) {
     // jalan di x
-    if (x2 > x1) {
+    if (x2 >= x1) {
       // ke kanan
       let y = y1;
       for (let x = x1; x <= x2; x++) {
-        titik(Math.round(x), Math.round(y), color);
-        y += dy / Math.abs(dx);
+        titik(x, Math.round(y), color);
+        y += dy / dx;
       }
     } else {
       // ke kiri
       let y = y1;
       for (let x = x1; x >= x2; x--) {
-        titik(Math.round(x), Math.round(y), color);
-        y -= dy / Math.abs(dx);
+        titik(x, Math.round(y), color);
+        y -= dy / dx;
       }
     }
   } else {
     // jalan di y
-    if (y2 > y1) {
+    if (y2 >= y1) {
       // ke bawah
       let x = x1;
       for (let y = y1; y <= y2; y++) {
-        titik(Math.round(x), Math.round(y), color);
-        x += dx / Math.abs(dy);
+        titik(Math.round(x), y, color);
+        x += dx / dy;
       }
     } else {
       // ke atas
       let x = x1;
       for (let y = y1; y >= y2; y--) {
-        titik(Math.round(x), Math.round(y), color);
-        x -= dx / Math.abs(dy);
+        titik(Math.round(x), y, color);
+        x -= dx / dy;
       }
     }
   }
@@ -70,7 +68,7 @@ export const garis = (x1, y1, x2, y2, color) => {
 export const polyLine = (arr) => {
   console.info(arr.length);
 
-  for (let i = 0; i < arr.length; i++) {
+  for (let i = 0; i < arr.length - 1; i++) {
     let x1 = arr[i][0];
     let y1 = arr[i][1];
     let x2 = arr[i + 1][0];
@@ -134,6 +132,8 @@ export const polyLineInteraktif = (e, color) => {
   let rect = c_handler.getBoundingClientRect();
   let clickedX = Math.round(e.clientX) - Math.round(rect.left);
   let clickedY = Math.round(e.clientY) - Math.round(rect.top);
+  // let clickedX = e.offsetX;
+  // let clickedY = e.offsetY;
 
   garis(x, y, clickedX, clickedY, color);
   x = clickedX;
@@ -143,15 +143,10 @@ export const polyLineInteraktif = (e, color) => {
 // NOMOR 7 //
 //1. Buatlah sebuah  fungsi yang membuat kotak isi (dari garis, prototipe function bebas)
 export const kotakIsi = (x, y, s, color) => {
-  for (let i = 0; i < s; i++) {
-    garis(x, y + i, x + s, y + i, color);
-    garis(x + i, y, x + i, y + s, color);
+  for (let i = -s / 2; i < s / 2; i++) {
+    garis(x - s / 2, y + i, x + s - s / 2, y + i, color);
   }
 };
 
 // 2. buatlah sebuah kotak dilayar yang apabila di klik akan di highlight bila di klik lagi highlight akan hilang
-export const kotak = new Kotak(ctx, 100, 100, 50);
-
-export const draw = () => {
-  kotak.draw();
-};
+// export const kotak = new Kotak(ctx, 100, 100, 50);
