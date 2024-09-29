@@ -202,19 +202,18 @@ export const segitigaKotakInteraktif = () => {
   ];
 
   let selectedBox = null;
-  let isVisible = true;
   const sizeKotak = 20;
 
   const gambarSegitigaKotak = () => {
     let new_image_data = ctx.createImageData(c_handler.width, c_handler.height);
     image_data = new_image_data;
-
     ctx.putImageData(image_data, 0, 0);
 
-    if (isVisible) {
-      polygon(points);
-      points.forEach((e) => kotakIsi(e[0], e[1], sizeKotak, 0));
-    }
+    polygon(points);
+    points.forEach((e, index) => {
+      const color = selectedBox === index ? { r: 255 } : 0;
+      kotakIsi(e[0], e[1], sizeKotak, color);
+    });
   };
 
   c_handler.addEventListener("click", (e) => {
@@ -224,14 +223,15 @@ export const segitigaKotakInteraktif = () => {
 
     for (let i = 0; i < points.length; i++) {
       const [bx, by] = points[i];
+      console.info([bx, by]);
       if (clickX >= bx - sizeKotak / 2 && clickX <= bx + sizeKotak / 2 && clickY >= by - sizeKotak / 2 && clickY <= by + sizeKotak / 2) {
         kotakClicked = true;
         if (selectedBox === i) {
-          isVisible = false;
+          console.info("masuk a");
           selectedBox = null;
         } else {
           selectedBox = i;
-          kotakIsi(bx, by, sizeKotak, { r: 255 });
+          console.info("masuk b");
         }
         break;
       }
@@ -241,8 +241,6 @@ export const segitigaKotakInteraktif = () => {
       if (selectedBox !== null) {
         points[selectedBox] = [clickX, clickY];
         selectedBox = null;
-      } else if (!isVisible) {
-        isVisible = true;
       }
     }
     gambarSegitigaKotak();
