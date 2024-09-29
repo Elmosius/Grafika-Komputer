@@ -192,8 +192,8 @@ export const garisTebal = (x1, y1, x2, y2, color, tebal) => {
 };
 
 ///////////////////////////////////////
-/////// Pertemuan 2 - Praktikkum /////////
-//////////////////////////////////////
+/////// Pertemuan 2 - Praktikkum /////
+/////////////////////////////////////
 export const segitigaKotakInteraktif = () => {
   const points = [
     [100, 100],
@@ -228,6 +228,7 @@ export const segitigaKotakInteraktif = () => {
         kotakClicked = true;
         if (selectedBox === i) {
           console.info("masuk a");
+          points.splice(i, 1);
           selectedBox = null;
         } else {
           selectedBox = i;
@@ -239,8 +240,11 @@ export const segitigaKotakInteraktif = () => {
 
     if (!kotakClicked) {
       if (selectedBox !== null) {
+        console.info("check");
         points[selectedBox] = [clickX, clickY];
         selectedBox = null;
+      } else {
+        if (points.length < 3) points.push([clickX, clickY]);
       }
     }
     gambarSegitigaKotak();
