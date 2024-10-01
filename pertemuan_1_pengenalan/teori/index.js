@@ -23,7 +23,7 @@ const titik = (x, y, color) => {
 // Buat kotak full dengan titik
 // for (let i = 100; i < 400; i += 10) {
 //   for (let j = 100; j < 400; j += 10) {
-//     titik(i, j);
+//     titik(i, j, 0);
 //   }
 // }
 
@@ -31,7 +31,7 @@ const titik = (x, y, color) => {
 // buat kotak isi kosong
 // for (let i = 100; i <= 400; i += 10) {
 //   for (let j = 100; j <= 400; j += 10) {
-//     if (i == 100 || j == 100 || i == 400 || j == 400) titik(i, j);
+//     if (i == 100 || j == 100 || i == 400 || j == 400) titik(i, j,0);
 //   }
 // }
 
@@ -53,15 +53,15 @@ const titik = (x, y, color) => {
 
 // Nomor 6
 // Buat kalau di click muncul
-c_handler.addEventListener("click", (e) => {
-  const rect = c_handler.getBoundingClientRect();
-  console.info(rect);
-  console.info(e.clientX);
-  console.info(e.clientY);
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
+// c_handler.addEventListener("click", (e) => {
+//   const rect = c_handler.getBoundingClientRect();
+//   console.info(rect);
+//   console.info(e.clientX);
+//   console.info(e.clientY);
+//   const x = e.clientX - rect.left;
+//   const y = e.clientY - rect.top;
 
-  console.info(x);
-  console.info(y);
-  titik(Math.floor(x), Math.floor(y), { r: 255 });
-});
+//   console.info(x);
+//   console.info(y);
+//   titik(Math.floor(x), Math.floor(y), { r: 255 });
+// });

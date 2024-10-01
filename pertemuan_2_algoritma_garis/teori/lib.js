@@ -252,3 +252,136 @@ export const segitigaKotakInteraktif = () => {
 
   gambarSegitigaKotak();
 };
+
+///////////////////////////////////////
+/////// Pertemuan 3 - Teori /////////
+/////////////////////////////////////
+
+// Gambar Lingkaran
+// Fungsi gambar lingkaran ini menghasilkan bentuk lingkaran karena menggunakan persamaan lingkaran
+// untuk menghitung titik-titik di sepanjang tepi lingkaran dari kiri ke kanan dan dari atas ke bawah.
+export const gbr_lingkaran = (xc, yc, radius, color) => {
+  for (let x = xc - radius; x < xc + radius; x++) {
+    let y = yc + Math.sqrt(Math.pow(radius, 2) - Math.pow(x - xc, 2));
+    titik(Math.ceil(x), Math.ceil(y), color);
+
+    y = yc - Math.sqrt(Math.pow(radius, 2) - Math.pow(x - xc, 2));
+    titik(Math.ceil(x), Math.ceil(y), color);
+  }
+  for (let x = xc - radius; x < xc + radius; x++) {
+    let y = yc + Math.sqrt(Math.pow(radius, 2) - Math.pow(x - xc, 2));
+    titik(Math.ceil(y), Math.ceil(x), color);
+
+    y = yc - Math.sqrt(Math.pow(radius, 2) - Math.pow(x - xc, 2));
+    titik(Math.ceil(y), Math.ceil(x), color);
+  }
+};
+
+// gambar polar
+// Fungsi lingkaran polar ini menghasilkan bentuk lingkaran karena menggunakan koordinat polar
+// di mana radius tetap konstan dan theta bervariasi dari 0 hingga 2π untuk mencakup seluruh keliling lingkaran.
+export const lingkaran_polar = (xc, yc, radius, color) => {
+  for (let theta = 0; theta < Math.PI * 2; theta += 0.01) {
+    x = xc + radius * Math.cos(theta);
+    y = yc + radius * Math.sin(theta);
+
+    titik(Math.ceil(x), Math.ceil(y), color);
+  }
+};
+
+// gambr elips
+// Fungsi elips polar ini menghasilkan bentuk elips karena menggunakan dua radius berbeda (radiusX dan radiusY)
+// untuk menghitung titik-titik di sepanjang tepi elips, sementara theta bervariasi dari 0 hingga 2π.
+export const elips_polar = (xc, yc, radiusX, radiusY, color) => {
+  for (let theta = 0; theta < Math.PI * 2; theta += 0.01) {
+    x = xc + radiusX * Math.cos(theta);
+    y = yc + radiusY * Math.sin(theta);
+
+    titik(Math.ceil(x), Math.ceil(y), color);
+  }
+};
+
+// Nomor 3 => fungsi segi banyak
+export const segi_banyak = (xc, yc, radius, sisi, color) => {
+  const angle = (2 * Math.PI) / sisi;
+
+  let points = [];
+
+  for (let i = 0; i < sisi; i++) {
+    const x = xc + radius * Math.cos(i * angle);
+    const y = yc + radius * Math.sin(i * angle);
+    points.push({ x: Math.ceil(x), y: Math.ceil(y) });
+  }
+
+  for (let i = 0; i < sisi; i++) {
+    const start = points[i];
+    const end = points[(i + 1) % sisi];
+    garis(start.x, start.y, end.x, end.y, color);
+  }
+};
+
+// Nomor 4 -> garis ke titik menggambar lingkaran
+export const garisDenganLingkaran = (x1, y1, x2, y2, radius, color) => {
+  let dx = x2 - x1;
+  let dy = y2 - y1;
+
+  if (Math.abs(dx) > Math.abs(dy)) {
+    // Jalan di x
+    if (x2 >= x1) {
+      // Ke kanan
+      let y = y1;
+      for (let x = x1; x <= x2; x++) {
+        lingkaran_polar(x, Math.round(y), radius, color);
+        y += dy / dx;
+      }
+    } else {
+      // Ke kiri
+      let y = y1;
+      for (let x = x1; x >= x2; x--) {
+        lingkaran_polar(x, Math.round(y), radius, color);
+        y -= dy / dx;
+      }
+    }
+  } else {
+    // Jalan di y
+    if (y2 >= y1) {
+      // Ke bawah
+      let x = x1;
+      for (let y = y1; y <= y2; y++) {
+        lingkaran_polar(Math.round(x), y, radius, color);
+        x += dx / dy;
+      }
+    } else {
+      // Ke atas
+      let x = x1;
+      for (let y = y1; y >= y2; y--) {
+        lingkaran_polar(Math.round(x), y, radius, color);
+        x -= dx / dy;
+      }
+    }
+  }
+};
+
+// Nomor 5 Spiral
+// Fungsi spiral ini menghasilkan bentuk spiral karena radius terus bertambah seiring dengan bertambahnya theta.
+// Ini menciptakan efek spiral yang semakin melebar seiring dengan putaran theta dari 0 hingga 6π.
+export const spiral = (xc, yc, radius, color) => {
+  for (let theta = 0; theta <= Math.PI * 6; theta += 0.01) {
+    radius += 0.06;
+    x = xc + radius * Math.cos(theta);
+    y = yc + radius * Math.sin(theta);
+
+    titik(Math.ceil(x), Math.ceil(y), color);
+  }
+};
+
+// Nomor 6
+// Lingkaran dalam lingkaran
+export const linglung = (xc, yc, radius, color) => {
+  for (let theta = 0; theta < Math.PI * 2; theta += 0.01) {
+    x = xc + radius * Math.cos(theta);
+    y = yc + radius * Math.sin(theta);
+
+    titik(Math.ceil(x), Math.ceil(y), color);
+  }
+};
