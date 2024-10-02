@@ -1,5 +1,5 @@
 ///////////////////////////////////////
-/////// Pertemuan 3 - Teori /////////
+/////// Pertemuan 3 - Praktikum //////
 /////////////////////////////////////
 
 export class ImageLib {
@@ -7,6 +7,8 @@ export class ImageLib {
     this.c_handler = document.querySelector(`#${canvas_id}`);
     this.ctx = this.c_handler.getContext("2d");
     this.image_data = this.ctx.getImageData(0, 0, this.c_handler.width, this.c_handler.height);
+    this.clickCount = 0;
+    this.circleSize = 20;
   }
 
   draw() {
@@ -203,21 +205,19 @@ export class ImageLib {
   jamSederhana(xc, yc, radiusBesar, radiusKecil, jam, menit) {
     this.lingkaran_polar(xc, yc, radiusBesar, 0);
 
-    let posisiJam = jam % 12;
-    if (posisiJam === 0) {
-      posisiJam = 12;
-    }
-    let posisiMenit = Math.floor(menit / 5);
+    let posisiJam = jam - 3;
+    let posisiMenit = Math.floor(menit / 5) - 3;
     const jumlahLingkaranKecil = 12;
 
     console.log(posisiJam);
     console.log(posisiMenit);
     for (let i = 0; i < jumlahLingkaranKecil; i++) {
-      let theta = ((Math.PI * 2) / jumlahLingkaranKecil) * i - Math.PI / 2;
+      let theta = ((Math.PI * 2) / jumlahLingkaranKecil) * i;
       let xPusatKecil = xc + radiusBesar * Math.cos(theta);
       let yPusatKecil = yc + radiusBesar * Math.sin(theta);
-      // console.info(i);
-      let warnaLingkaranKecil = i === posisiJam % 12 ? { r: 255 } : 0;
+
+      let warnaLingkaranKecil = i === posisiJam ? { r: 255 } : 0;
+      //   console.log(i);
       this.lingkaran_polar(xPusatKecil, yPusatKecil, radiusKecil, warnaLingkaranKecil);
     }
 
@@ -225,7 +225,7 @@ export class ImageLib {
     this.lingkaran_polar(xc, yc, radiusBesarKecil, 0);
 
     for (let i = 0; i < jumlahLingkaranKecil; i++) {
-      let theta = ((Math.PI * 2) / jumlahLingkaranKecil) * i - Math.PI / 2;
+      let theta = ((Math.PI * 2) / jumlahLingkaranKecil) * i;
       let xPusatKecil = xc + radiusBesarKecil * Math.cos(theta);
       let yPusatKecil = yc + radiusBesarKecil * Math.sin(theta);
 
@@ -233,5 +233,58 @@ export class ImageLib {
 
       this.lingkaran_polar(xPusatKecil, yPusatKecil, radiusKecil / 2, warnaLingkaranKecil);
     }
+  }
+
+  obatNyamuk(xc, yc, rad, s, color) {
+    // console.info(color);
+    for (let theta = 0; theta <= Math.PI * 8; theta += 0.01) {
+      rad -= s;
+      let x = xc + rad * Math.cos(theta);
+      let y = yc + rad * Math.sin(theta);
+
+      this.titik(Math.ceil(x), Math.ceil(y), color);
+    }
+  }
+
+  bunga(posisi, radius, n, color) {
+    let { xc, yc } = posisi;
+
+    for (let theta = 0; theta < Math.PI * 2; theta += 0.001) {
+      let x = xc + radius * Math.cos(n * theta) * Math.cos(theta);
+      let y = yc + radius * Math.cos(n * theta) * Math.sin(theta);
+      this.titik(Math.ceil(x), Math.ceil(y), color);
+    }
+  }
+
+  getRandomColor() {
+    let color = { r: Math.floor(Math.random() * 256), g: Math.floor(Math.random() * 256), b: Math.floor(Math.random() * 256) };
+    console.info(color);
+    return color;
+  }
+
+  obatInteraktif(e, isDoubleClick) {
+    this.clickCount++;
+
+    console.info(isDoubleClick);
+    document.getElementById("click-counter").textContent = `Jumlah klik: ${this.clickCount}`;
+
+    const x = Math.ceil(e.offsetX);
+    const y = Math.ceil(e.offsetY);
+
+    const color = this.getRandomColor();
+
+    if (isDoubleClick) {
+      console.info("a");
+      let new_image_data = this.ctx.createImageData(this.c_handler.width, this.c_handler.height);
+      this.image_data = new_image_data;
+      this.ctx.putImageData(this.image_data, 0, 0);
+
+      this.obatNyamuk(x, y, 1, 0.05, color);
+    } else {
+      console.info("b");
+      this.lingkaran_polar(x, y, this.circleSize, color);
+      this.circleSize += 10;
+    }
+    this.draw();
   }
 }
