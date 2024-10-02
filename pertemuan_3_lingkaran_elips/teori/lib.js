@@ -67,7 +67,7 @@ export class ImageLib {
   // Gambar Lingkaran
   // Fungsi gambar lingkaran ini menghasilkan bentuk lingkaran karena menggunakan persamaan lingkaran
   // untuk menghitung titik-titik di sepanjang tepi lingkaran dari kiri ke kanan dan dari atas ke bawah.
-  gbr_lingkaran(xc, yc, radius, color) {
+  lingkaran_polar(xc, yc, radius, color) {
     for (let x = xc - radius; x < xc + radius; x++) {
       let y = yc + Math.sqrt(Math.pow(radius, 2) - Math.pow(x - xc, 2));
       this.titik(Math.ceil(x), Math.ceil(y), color);
@@ -88,11 +88,9 @@ export class ImageLib {
   // Fungsi lingkaran polar ini menghasilkan bentuk lingkaran karena menggunakan koordinat polar
   // di mana radius tetap konstan dan theta bervariasi dari 0 hingga 2π untuk mencakup seluruh keliling lingkaran.
   lingkaran_polar(xc, yc, radius, color) {
-    let x;
-    let y;
     for (let theta = 0; theta < Math.PI * 2; theta += 0.01) {
-      x = xc + radius * Math.cos(theta);
-      y = yc + radius * Math.sin(theta);
+      let x = xc + radius * Math.cos(theta);
+      let y = yc + radius * Math.sin(theta);
 
       this.titik(Math.ceil(x), Math.ceil(y), color);
     }
@@ -102,11 +100,9 @@ export class ImageLib {
   // Fungsi elips polar ini menghasilkan bentuk elips karena menggunakan dua radius berbeda (radiusX dan radiusY)
   // untuk menghitung titik-titik di sepanjang tepi elips, sementara theta bervariasi dari 0 hingga 2π.
   elips_polar(xc, yc, radiusX, radiusY, color) {
-    let x;
-    let y;
     for (let theta = 0; theta < Math.PI * 2; theta += 0.01) {
-      x = xc + radiusX * Math.cos(theta);
-      y = yc + radiusY * Math.sin(theta);
+      let x = xc + radiusX * Math.cos(theta);
+      let y = yc + radiusY * Math.sin(theta);
 
       this.titik(Math.ceil(x), Math.ceil(y), color);
     }
@@ -177,12 +173,10 @@ export class ImageLib {
   // Fungsi spiral ini menghasilkan bentuk spiral karena radius terus bertambah seiring dengan bertambahnya theta.
   // Ini menciptakan efek spiral yang semakin melebar seiring dengan putaran theta dari 0 hingga 6π.
   spiral(xc, yc, radius, color) {
-    let x;
-    let y;
     for (let theta = 0; theta <= Math.PI * 6; theta += 0.01) {
       radius += 0.06;
-      x = xc + radius * Math.cos(theta);
-      y = yc + radius * Math.sin(theta);
+      let x = xc + radius * Math.cos(theta);
+      let y = yc + radius * Math.sin(theta);
 
       this.titik(Math.ceil(x), Math.ceil(y), color);
     }
@@ -192,15 +186,7 @@ export class ImageLib {
   // Lingkaran dalam lingkaran
 
   linglung(xc, yc, radiusBesar, radiusKecil, color) {
-    const gambarLingkaran = (xc, yc, radius, color) => {
-      for (let theta = 0; theta < Math.PI * 2; theta += 0.01) {
-        let x = xc + radius * Math.cos(theta);
-        let y = yc + radius * Math.sin(theta);
-        titik(Math.ceil(x), Math.ceil(y), color);
-      }
-    };
-
-    gambarLingkaran(xc, yc, radiusBesar, color);
+    this.lingkaran_polar(xc, yc, radiusBesar, color);
 
     const jumlahLingkaranKecil = 10;
     for (let i = 0; i < jumlahLingkaranKecil; i++) {
@@ -208,48 +194,42 @@ export class ImageLib {
       let xPusatKecil = xc + radiusBesar * Math.cos(theta);
       let yPusatKecil = yc + radiusBesar * Math.sin(theta);
 
-      gambarLingkaran(xPusatKecil, yPusatKecil, radiusKecil, color);
+      this.lingkaran_polar(xPusatKecil, yPusatKecil, radiusKecil, color);
     }
   }
 
   // Nomor 7
   // Jam sederhana
   jamSederhana(xc, yc, radiusBesar, radiusKecil, jam, menit) {
-    const gambarLingkaran = (xc, yc, radius, color) => {
-      for (let theta = 0; theta < Math.PI * 2; theta += 0.01) {
-        let x = xc + radius * Math.cos(theta);
-        let y = yc + radius * Math.sin(theta);
-        titik(Math.ceil(x), Math.ceil(y), color);
-      }
-    };
+    this.lingkaran_polar(xc, yc, radiusBesar, 0);
 
-    gambarLingkaran(xc, yc, radiusBesar, 0);
-
-    let posisiJam = jam % 12;
-    let posisiMenit = Math.floor(menit / 5);
+    let posisiJam = jam - 3;
+    let posisiMenit = Math.floor(menit / 5) - 3;
     const jumlahLingkaranKecil = 12;
 
+    console.log(posisiJam);
+    console.log(posisiMenit);
     for (let i = 0; i < jumlahLingkaranKecil; i++) {
       let theta = ((Math.PI * 2) / jumlahLingkaranKecil) * i;
       let xPusatKecil = xc + radiusBesar * Math.cos(theta);
       let yPusatKecil = yc + radiusBesar * Math.sin(theta);
 
-      let warnaLingkaranKecil = i === posisiJam ? { r: 100 } : 0;
-
-      gambarLingkaran(xPusatKecil, yPusatKecil, radiusKecil, warnaLingkaranKecil);
+      let warnaLingkaranKecil = i === posisiJam ? { r: 255 } : 0;
+      //   console.log(i);
+      this.lingkaran_polar(xPusatKecil, yPusatKecil, radiusKecil, warnaLingkaranKecil);
     }
 
     const radiusBesarKecil = radiusBesar / 2;
-    gambarLingkaran(xc, yc, radiusBesarKecil, 0);
+    this.lingkaran_polar(xc, yc, radiusBesarKecil, 0);
 
     for (let i = 0; i < jumlahLingkaranKecil; i++) {
       let theta = ((Math.PI * 2) / jumlahLingkaranKecil) * i;
       let xPusatKecil = xc + radiusBesarKecil * Math.cos(theta);
       let yPusatKecil = yc + radiusBesarKecil * Math.sin(theta);
 
-      let warnaLingkaranKecil = i === posisiMenit ? { g: 100 } : 0;
+      let warnaLingkaranKecil = i === posisiMenit ? { g: 255 } : 0;
 
-      gambarLingkaran(xPusatKecil, yPusatKecil, radiusKecil / 2, warnaLingkaranKecil);
+      this.lingkaran_polar(xPusatKecil, yPusatKecil, radiusKecil / 2, warnaLingkaranKecil);
     }
   }
 }

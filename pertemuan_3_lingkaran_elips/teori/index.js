@@ -9,7 +9,7 @@ const lib = new ImageLib("my_canvas");
 // lib.elips_polar(300, 300, 150, 50, 0);
 
 // // Nomor 3
-lib.segi_banyak(400, 100, 100, 6, 0);
+// lib.segi_banyak(400, 100, 100, 6, 0);
 
 // // Nomor 4
 // lib.garisDenganLingkaran(100, 400, 100, 400, 50, 0);
@@ -21,6 +21,6 @@ lib.segi_banyak(400, 100, 100, 6, 0);
 // lib.linglung(300, 300, 100,20, 0);
 
 // Nomor 7
-// lib.jamSederhana(200, 200, 100, 20, 12, 27);
+lib.jamSederhana(200, 200, 100, 20, 11, 27);
 
 lib.draw();
