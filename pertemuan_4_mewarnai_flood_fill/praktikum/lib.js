@@ -1,5 +1,5 @@
 ///////////////////////////////////////
-/////// Pertemuan 4 - Teori /////////
+/////// Pertemuan 4 - Praktikum /////////
 /////////////////////////////////////
 
 export class ImageLib {
@@ -80,6 +80,27 @@ export class ImageLib {
 
     console.info(xFirst, yFirst, xLast, yLast);
     this.garis(xFirst, yFirst, xLast, yLast, color);
+  }
+
+  bunga(posisi, radius, n, toFlood, color) {
+    let { xc, yc } = posisi;
+    let fill = { x: 0, y: 0 };
+    // let kelopak = n % 2 === 0 ? (kelopak *= 2) : kelopak;
+
+    // for (let i = 0; i < n; i++) {
+    for (let theta = 0; theta < Math.PI * 2; theta += 0.001) {
+      let x = xc + radius * Math.cos(n * theta) * Math.cos(theta);
+      let y = yc + radius * Math.cos(n * theta) * Math.sin(theta);
+      this.titik(Math.ceil(x), Math.ceil(y), color);
+      fill.x = x;
+      fill.y = y;
+    }
+
+    console.info(fill.x, fill.y);
+
+   
+    //   this.floodFillStack(posisi - x, 0, toFlood, color);
+    // }
   }
 
   floodFillNaive(x, y, toFlood, color) {

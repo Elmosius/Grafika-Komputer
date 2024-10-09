@@ -24,3 +24,5 @@ lib.polygon(point_array2, { g: 255 });
 lib.floodFillStack(210, 110, { r: 0, g: 0, b: 0 }, { r: 0, g: 255, b: 0 });
 
 lib.draw();
+
+// Buat logo 
