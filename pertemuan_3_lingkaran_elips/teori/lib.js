@@ -204,20 +204,24 @@ export class ImageLib {
     this.lingkaran_polar(xc, yc, radiusBesar, 0);
 
     let posisiJam = jam % 12;
+
     if (posisiJam === 0) {
       posisiJam = 12;
     }
+
     let posisiMenit = Math.floor(menit / 5);
     const jumlahLingkaranKecil = 12;
 
     console.log(posisiJam);
     console.log(posisiMenit);
+
     for (let i = 0; i < jumlahLingkaranKecil; i++) {
       let theta = ((Math.PI * 2) / jumlahLingkaranKecil) * i - Math.PI / 2;
       let xPusatKecil = xc + radiusBesar * Math.cos(theta);
       let yPusatKecil = yc + radiusBesar * Math.sin(theta);
       // console.info(i);
       let warnaLingkaranKecil = i === posisiJam % 12 ? { r: 255 } : 0;
+
       this.lingkaran_polar(xPusatKecil, yPusatKecil, radiusKecil, warnaLingkaranKecil);
     }
 
