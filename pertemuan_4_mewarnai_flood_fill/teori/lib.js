@@ -82,6 +82,15 @@ export class ImageLib {
     this.garis(xFirst, yFirst, xLast, yLast, color);
   }
 
+  lingkaran_polar(xc, yc, radius, color) {
+    for (let theta = 0; theta < Math.PI * 2; theta += 0.01) {
+      let x = xc + radius * Math.cos(theta);
+      let y = yc + radius * Math.sin(theta);
+
+      this.titik(Math.ceil(x), Math.ceil(y), color);
+    }
+  }
+
   floodFillNaive(x, y, toFlood, color) {
     let index = 4 * (x + y * this.c_handler.width);
 
@@ -126,7 +135,7 @@ export class ImageLib {
       let titik_skrg = tumpukan.pop();
       let index_skrg = 4 * (titik_skrg.x + titik_skrg.y * this.c_handler.width);
 
-      console.info(titik_skrg);
+      // console.info(titik_skrg);
       let r1 = this.image_data.data[index_skrg];
       let g1 = this.image_data.data[index_skrg + 1];
       let b1 = this.image_data.data[index_skrg + 2];
@@ -143,5 +152,38 @@ export class ImageLib {
         tumpukan.push({ x: titik_skrg.x, y: titik_skrg.y - 1 });
       }
     }
+  }
+
+  setengah_lingkaran_polar(xc, yc, radius, color, arah) {
+    let startTheta, endTheta;
+    if (arah === "atas") {
+      startTheta = Math.PI;
+      endTheta = 2 * Math.PI;
+    } else if (arah === "bawah") {
+      startTheta = 0;
+      endTheta = Math.PI;
+    } else if (arah === "kiri") {
+      startTheta = 0.5 * Math.PI;
+      endTheta = 1.5 * Math.PI;
+    } else if (arah === "kanan") {
+      startTheta = -0.5 * Math.PI;
+      endTheta = 0.5 * Math.PI;
+    } else {
+      throw new Error("Arah harus 'atas', 'bawah', 'kiri', atau 'kanan'");
+    }
+
+    let points = [{ x: xc, y: yc }];
+    for (let theta = startTheta; theta < endTheta; theta += 0.005) {
+      let x = xc + radius * Math.cos(theta);
+      let y = yc + radius * Math.sin(theta);
+      points.push({ x: Math.round(x), y: Math.round(y) });
+    }
+    this.polygon(points, color);
+  }
+
+  tulisan(ukuran, font, warna, tulisan, koordinat) {
+    this.ctx.font = `${ukuran}px ${font}`;
+    this.ctx.fillStyle = `${warna}`;
+    this.ctx.fillText(`${tulisan}`, koordinat.x, koordinat.y);
   }
 }
