@@ -82,56 +82,28 @@ export class ImageLib {
     this.garis(xFirst, yFirst, xLast, yLast, color);
   }
 
-  bunga(posisi, radius, n, toFlood, color) {
-    let { xc, yc } = posisi;
-    let fill = { x: 0, y: 0 };
-    // let kelopak = n % 2 === 0 ? (kelopak *= 2) : kelopak;
+  lingkaran_polar(xc, yc, radius, color) {
+    for (let theta = 0; theta < Math.PI * 2; theta += 0.01) {
+      let x = xc + radius * Math.cos(theta);
+      let y = yc + radius * Math.sin(theta);
 
-    // for (let i = 0; i < n; i++) {
+      this.titik(Math.ceil(x), Math.ceil(y), color);
+    }
+  }
+
+  getRandomColor() {
+    let color = { r: Math.floor(Math.random() * 256), g: Math.floor(Math.random() * 256), b: Math.floor(Math.random() * 256) };
+    console.info(color);
+    return color;
+  }
+
+  bunga(posisi, radius, n, color) {
+    let { xc, yc } = posisi;
+
     for (let theta = 0; theta < Math.PI * 2; theta += 0.001) {
       let x = xc + radius * Math.cos(n * theta) * Math.cos(theta);
       let y = yc + radius * Math.cos(n * theta) * Math.sin(theta);
       this.titik(Math.ceil(x), Math.ceil(y), color);
-      fill.x = x;
-      fill.y = y;
-    }
-
-    console.info(fill.x, fill.y);
-
-   
-    //   this.floodFillStack(posisi - x, 0, toFlood, color);
-    // }
-  }
-
-  floodFillNaive(x, y, toFlood, color) {
-    let index = 4 * (x + y * this.c_handler.width);
-
-    let r1 = this.image_data.data[index];
-    let g1 = this.image_data.data[index + 1];
-    let b1 = this.image_data.data[index + 2];
-
-    // // console.info(this.image_data.data[index]);
-    // // console.info(this.image_data.data[index + 1]);
-    // // console.info(`color r:${color.r} g:${color.g} b:   ${color.b}`);
-    // // console.info(`r1:${r1} g1:${g1} b1:${b1}`);
-    // // console.info(`r:${toFlood.r} g:${toFlood.g} b:${toFlood.b}`);
-    if (r1 === toFlood.r && g1 === toFlood.g && b1 === toFlood.b) {
-      this.image_data.data[index] = color.r;
-      this.image_data.data[index + 1] = color.g;
-      this.image_data.data[index + 2] = color.b;
-      this.image_data.data[index + 3] = 255;
-
-      if (x + 1 < this.c_handler.width) {
-        this.floodFillNaive(x + 1, y, toFlood, color);
-      }
-
-      if (y + 1 < this.c_handler.height) {
-        this.floodFillNaive(x, y + 1, toFlood, color);
-      }
-
-      this.floodFillNaive(x - 1, y, toFlood, color);
-
-      this.floodFillNaive(x, y - 1, toFlood, color);
     }
   }
 
@@ -147,7 +119,7 @@ export class ImageLib {
       let titik_skrg = tumpukan.pop();
       let index_skrg = 4 * (titik_skrg.x + titik_skrg.y * this.c_handler.width);
 
-      console.info(titik_skrg);
+      // console.info(titik_skrg);
       let r1 = this.image_data.data[index_skrg];
       let g1 = this.image_data.data[index_skrg + 1];
       let b1 = this.image_data.data[index_skrg + 2];
@@ -164,5 +136,38 @@ export class ImageLib {
         tumpukan.push({ x: titik_skrg.x, y: titik_skrg.y - 1 });
       }
     }
+  }
+
+  fillBunga1() {
+    this.floodFillStack(100, 150, { r: 0, g: 0, b: 0 }, { r: 102, g: 102, b: 255 });
+    this.floodFillStack(200, 150, { r: 0, g: 0, b: 0 }, { r: 102, g: 102, b: 255 });
+    this.floodFillStack(150, 100, { r: 0, g: 0, b: 0 }, { r: 102, g: 102, b: 255 });
+    this.floodFillStack(150, 200, { r: 0, g: 0, b: 0 }, { r: 102, g: 102, b: 255 });
+  }
+
+  fillBunga2() {
+    this.floodFillStack(325, 150, { r: 0, g: 0, b: 0 }, { r: 204, g: 102, b: 255 });
+    this.floodFillStack(425, 150, { r: 0, g: 0, b: 0 }, { r: 204, g: 102, b: 255 });
+    this.floodFillStack(375, 100, { r: 0, g: 0, b: 0 }, { r: 204, g: 102, b: 255 });
+    this.floodFillStack(375, 200, { r: 0, g: 0, b: 0 }, { r: 204, g: 102, b: 255 });
+    this.floodFillStack(325, 100, { r: 0, g: 0, b: 0 }, { r: 204, g: 102, b: 255 });
+    this.floodFillStack(425, 200, { r: 0, g: 0, b: 0 }, { r: 204, g: 102, b: 255 });
+    this.floodFillStack(325, 200, { r: 0, g: 0, b: 0 }, { r: 204, g: 102, b: 255 });
+    this.floodFillStack(425, 100, { r: 0, g: 0, b: 0 }, { r: 204, g: 102, b: 255 });
+  }
+
+  fillBunga3() {
+    this.floodFillStack(550, 150, { r: 0, g: 0, b: 0 }, { r: 255, g: 102, b: 204 });
+    this.floodFillStack(650, 150, { r: 0, g: 0, b: 0 }, { r: 255, g: 102, b: 204 });
+    this.floodFillStack(600, 100, { r: 0, g: 0, b: 0 }, { r: 255, g: 102, b: 204 });
+    this.floodFillStack(600, 200, { r: 0, g: 0, b: 0 }, { r: 255, g: 102, b: 204 });
+    this.floodFillStack(630, 200, { r: 0, g: 0, b: 0 }, { r: 255, g: 102, b: 204 });
+    this.floodFillStack(630, 170, { r: 0, g: 0, b: 0 }, { r: 255, g: 102, b: 204 });
+    this.floodFillStack(570, 100, { r: 0, g: 0, b: 0 }, { r: 255, g: 102, b: 204 });
+    this.floodFillStack(570, 130, { r: 0, g: 0, b: 0 }, { r: 255, g: 102, b: 204 });
+    this.floodFillStack(630, 100, { r: 0, g: 0, b: 0 }, { r: 255, g: 102, b: 204 });
+    this.floodFillStack(630, 130, { r: 0, g: 0, b: 0 }, { r: 255, g: 102, b: 204 });
+    this.floodFillStack(570, 200, { r: 0, g: 0, b: 0 }, { r: 255, g: 102, b: 204 });
+    this.floodFillStack(570, 170, { r: 0, g: 0, b: 0 }, { r: 255, g: 102, b: 204 });
   }
 }
