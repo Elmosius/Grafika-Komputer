@@ -27,7 +27,54 @@ lib2.polygon(
 );
 
 lib2.draw();
-// debugging;
+
+const buttons = document.querySelectorAll(".button");
+let selectedColor = null;
+const color = {
+  merah: { r: 255, g: 0, b: 0 },
+  hijau: { r: 0, g: 128, b: 0 },
+  biru: { r: 0, g: 0, b: 255 },
+  kuning: { r: 255, g: 255, b: 0 },
+  ungu: { r: 128, g: 0, b: 128 },
+  cyan: { r: 0, g: 255, b: 255 },
+};
+
+buttons.forEach((button) => {
+  button.addEventListener("click", () => {
+    selectedColor = color[button.id];
+  });
+});
+
+lib2.c_handler.addEventListener("click", (e) => {
+  if (selectedColor) {
+    const x = Math.ceil(e.offsetX);
+    const y = Math.ceil(e.offsetY);
+    const toFlood = { r: 0, g: 0, b: 0 };
+
+    lib2.floodFillStack(x, y, toFlood, selectedColor);
+    lib2.draw();
+  }
+});
+
+// Nomor 3
+const lib3 = new ImageLib("my_canvas3");
+const generateButton = document.getElementById("generate");
+const pathButton = document.getElementById("path");
+const resetButton = document.getElementById("reset");
+
+generateButton.addEventListener("click", () => {
+  lib3.generateMaze();
+});
+
+pathButton.addEventListener("click", () => {
+  lib3.findPath();
+});
+
+resetButton.addEventListener("click", () => {
+  lib3.reset();
+});
+
+  // debugging;
 // lib.c_handler.addEventListener("click", (e) => {
 //   console.info(e.offsetX);
 //   console.info(e.offsetY);

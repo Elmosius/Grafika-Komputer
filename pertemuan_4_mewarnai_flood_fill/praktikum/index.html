@@ -16,25 +16,33 @@
       .bg-purple:hover {
         background-color: purple;
       }
-      .bg-purple {
-        background-color: purple;
-      }
     </style>
   </head>
 
   <body class="text-center">
     <canvas id="my_canvas" width="750" height="300"> </canvas>
 
-    <div>
+    <div class="mt-5">
       <canvas id="my_canvas2" width="1000" height="600"> </canvas>
 
       <div>
-        <div class="btn button p-4 bg-danger"></div>
-        <div class="btn button p-4 bg-success"></div>
-        <div class="btn button p-4 bg-primary"></div>
-        <div class="btn button p-4 bg-warning"></div>
-        <div class="btn button p-4 bg-purple"></div>
-        <div class="btn button p-4 bg-info-subtle"></div>
+        <button type="button" id="merah" class="btn button p-4 bg-danger border border-secondary"></button>
+        <button type="button" id="hijau" class="btn button p-4 bg-success border border-secondary"></button>
+        <button type="button" id="biru" class="btn button p-4 bg-primary border border-secondary"></button>
+        <button type="button" id="kuning" class="btn button p-4 bg-warning border border-secondary"></button>
+        <button type="button" id="ungu" class="btn button p-4 bg-purple border border-secondary"></button>
+        <button type="button" id="cyan" class="btn button p-4 bg-info-subtle border border-secondary"></button>
+      </div>
+    </div>
+
+    <div class="mt-5">
+      <canvas id="my_canvas3" width="800" height="800"> </canvas>
+      <div class="h6 text-center">Click Find Path to calculate the shortest path</div>
+
+      <div class="column pb-5">
+        <button type="button" id="generate" class="btn btn-outline-dark">Generate Maze</button>
+        <button type="button" id="path" class="btn btn-outline-dark">Find Path</button>
+        <button type="button" id="reset" class="btn btn-outline-dark">Reset Canvas</button>
       </div>
     </div>
     <script type="module" src="index.js"></script>

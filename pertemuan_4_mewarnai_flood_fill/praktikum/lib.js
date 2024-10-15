@@ -138,6 +138,54 @@ export class ImageLib {
     }
   }
 
+  reset() {
+    let new_image_data = this.ctx.createImageData(this.c_handler.width, this.c_handler.height);
+    this.image_data = new_image_data;
+    this.ctx.putImageData(this.image_data, 0, 0);
+  }
+
+  generateMaze() {
+    this.reset();
+
+    const gridSize = this.c_handler.width / 9;
+    const rows = 9;
+    const cols = 9;
+    const margin = 10.5;
+
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        if (Math.random() < 0.45) {
+          let bentuk = Math.random() < 0.5 ? "kotak" : "bulet";
+
+          let x = col * gridSize + gridSize / 2;
+          let y = row * gridSize + gridSize / 2;
+
+          let maxSize = gridSize - margin * 2;
+          let ukuran = Math.random() * 0.7 + 0.75;
+          let bentukUkuran = maxSize * ukuran;
+
+          if (bentuk === "kotak") {
+            let width = bentukUkuran * (Math.random() * 0.5 + 0.5);
+            let height = bentukUkuran * (Math.random() * 0.5 + 0.5);
+
+            let arr = [
+              { x: Math.ceil(x - width / 2 + margin / 2), y: Math.ceil(y - height / 2 + margin / 2) },
+              { x: Math.ceil(x + width / 2 - margin / 2), y: Math.ceil(y - height / 2 + margin / 2) },
+              { x: Math.ceil(x + width / 2 - margin / 2), y: Math.ceil(y + height / 2 - margin / 2) },
+              { x: Math.ceil(x - width / 2 + margin / 2), y: Math.ceil(y + height / 2 - margin / 2) },
+            ];
+            this.polygon(arr, 0);
+          } else {
+            let radius = (bentukUkuran - margin) / 2;
+            this.lingkaran_polar(x, y, radius, 0);
+          }
+        }
+      }
+    }
+
+    this.draw();
+  }
+
   fillBunga1() {
     this.floodFillStack(100, 150, { r: 0, g: 0, b: 0 }, { r: 102, g: 102, b: 255 });
     this.floodFillStack(200, 150, { r: 0, g: 0, b: 0 }, { r: 102, g: 102, b: 255 });
