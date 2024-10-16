@@ -56,7 +56,7 @@ lib2.c_handler.addEventListener("click", (e) => {
   }
 });
 
-// Nomor 3
+// Nomor 3 - BELUM SELESAI
 const lib3 = new ImageLib("my_canvas3");
 const generateButton = document.getElementById("generate");
 const pathButton = document.getElementById("path");
@@ -74,7 +74,15 @@ resetButton.addEventListener("click", () => {
   lib3.reset();
 });
 
-  // debugging;
+lib3.c_handler.addEventListener("click", (e) => {
+  const x = e.offsetX;
+  const y = e.offsetY;
+  lib3.setPoint(x, y);
+
+  console.info(`${x} ${y}`);
+});
+
+// debugging;
 // lib.c_handler.addEventListener("click", (e) => {
 //   console.info(e.offsetX);
 //   console.info(e.offsetY);

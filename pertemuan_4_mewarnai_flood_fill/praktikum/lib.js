@@ -7,6 +7,10 @@ export class ImageLib {
     this.c_handler = document.querySelector(`#${canvas_id}`);
     this.ctx = this.c_handler.getContext("2d");
     this.image_data = this.ctx.getImageData(0, 0, this.c_handler.width, this.c_handler.height);
+    this.startPoint = null;
+    this.midPoint = null;
+    this.goalPoint = null;
+    this.objects = [];
   }
 
   draw() {
@@ -142,11 +146,13 @@ export class ImageLib {
     let new_image_data = this.ctx.createImageData(this.c_handler.width, this.c_handler.height);
     this.image_data = new_image_data;
     this.ctx.putImageData(this.image_data, 0, 0);
+    this.startPoint = null;
+    this.midPoint = null;
+    this.goalPoint = null;
   }
 
   generateMaze() {
     this.reset();
-
     const gridSize = this.c_handler.width / 9;
     const rows = 9;
     const cols = 9;
@@ -156,10 +162,8 @@ export class ImageLib {
       for (let col = 0; col < cols; col++) {
         if (Math.random() < 0.45) {
           let bentuk = Math.random() < 0.5 ? "kotak" : "bulet";
-
           let x = col * gridSize + gridSize / 2;
           let y = row * gridSize + gridSize / 2;
-
           let maxSize = gridSize - margin * 2;
           let ukuran = Math.random() * 0.7 + 0.75;
           let bentukUkuran = maxSize * ukuran;
@@ -167,22 +171,31 @@ export class ImageLib {
           if (bentuk === "kotak") {
             let width = bentukUkuran * (Math.random() * 0.5 + 0.5);
             let height = bentukUkuran * (Math.random() * 0.5 + 0.5);
-
-            let arr = [
-              { x: Math.ceil(x - width / 2 + margin / 2), y: Math.ceil(y - height / 2 + margin / 2) },
-              { x: Math.ceil(x + width / 2 - margin / 2), y: Math.ceil(y - height / 2 + margin / 2) },
-              { x: Math.ceil(x + width / 2 - margin / 2), y: Math.ceil(y + height / 2 - margin / 2) },
-              { x: Math.ceil(x - width / 2 + margin / 2), y: Math.ceil(y + height / 2 - margin / 2) },
-            ];
-            this.polygon(arr, 0);
+            let obj = {
+              x: Math.ceil(x - width / 2 + margin / 2),
+              y: Math.ceil(y - height / 2 + margin / 2),
+              width: Math.ceil(width - margin),
+              height: Math.ceil(height - margin),
+            };
+            this.objects.push(obj);
+            this.polygon(
+              [
+                { x: obj.x, y: obj.y },
+                { x: obj.x + obj.width, y: obj.y },
+                { x: obj.x + obj.width, y: obj.y + obj.height },
+                { x: obj.x, y: obj.y + obj.height },
+              ],
+              0
+            );
           } else {
             let radius = (bentukUkuran - margin) / 2;
+            let obj = { x: x, y: y, radius: radius };
+            this.objects.push(obj);
             this.lingkaran_polar(x, y, radius, 0);
           }
         }
       }
     }
-
     this.draw();
   }
 
@@ -217,5 +230,42 @@ export class ImageLib {
     this.floodFillStack(630, 130, { r: 0, g: 0, b: 0 }, { r: 255, g: 102, b: 204 });
     this.floodFillStack(570, 200, { r: 0, g: 0, b: 0 }, { r: 255, g: 102, b: 204 });
     this.floodFillStack(570, 170, { r: 0, g: 0, b: 0 }, { r: 255, g: 102, b: 204 });
+  }
+
+  setPoint(x, y) {
+    if (!this.startPoint) {
+      this.startPoint = { x, y };
+      this.titik(x, y, { r: 0, g: 0, b: 255 });
+    } else if (!this.midPoint) {
+      this.midPoint = { x, y };
+      this.titik(x, y, { r: 0, g: 255, b: 0 });
+    } else if (!this.goalPoint) {
+      this.goalPoint = { x, y };
+      this.titik(x, y, { r: 255, g: 0, b: 0 });
+    } else {
+      this.reset();
+      this.startPoint = { x, y };
+      this.titik(x, y, { r: 0, g: 0, b: 255 });
+    }
+    this.draw();
+  }
+
+  findPath() {
+    if (this.startPoint && this.midPoint && this.goalPoint) {
+      this.garis(this.startPoint.x, this.startPoint.y, this.midPoint.x, this.midPoint.y, { g: 100 });
+      this.garis(this.midPoint.x, this.midPoint.y, this.goalPoint.x, this.goalPoint.y, { g: 100 });
+      this.draw();
+    } else {
+      alert("Masukan 3 titik hehe");
+    }
+  }
+
+  isObject(x, y) {
+    for (let obj of this.objects) {
+      if (x >= obj.x && x <= obj.x + obj.width && y >= obj.y && y <= obj.y + obj.height) {
+        return true;
+      }
+    }
+    return false;
   }
 }
