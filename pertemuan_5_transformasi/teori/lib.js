@@ -91,96 +91,6 @@ export class ImageLib {
     }
   }
 
-  floodFillNaive(x, y, toFlood, color) {
-    let index = 4 * (x + y * this.c_handler.width);
-
-    let r1 = this.image_data.data[index];
-    let g1 = this.image_data.data[index + 1];
-    let b1 = this.image_data.data[index + 2];
-
-    // // console.info(this.image_data.data[index]);
-    // // console.info(this.image_data.data[index + 1]);
-    // // console.info(`color r:${color.r} g:${color.g} b:   ${color.b}`);
-    // // console.info(`r1:${r1} g1:${g1} b1:${b1}`);
-    // // console.info(`r:${toFlood.r} g:${toFlood.g} b:${toFlood.b}`);
-    if (r1 === toFlood.r && g1 === toFlood.g && b1 === toFlood.b) {
-      this.image_data.data[index] = color.r;
-      this.image_data.data[index + 1] = color.g;
-      this.image_data.data[index + 2] = color.b;
-      this.image_data.data[index + 3] = 255;
-
-      if (x + 1 < this.c_handler.width) {
-        this.floodFillNaive(x + 1, y, toFlood, color);
-      }
-
-      if (y + 1 < this.c_handler.height) {
-        this.floodFillNaive(x, y + 1, toFlood, color);
-      }
-
-      this.floodFillNaive(x - 1, y, toFlood, color);
-
-      this.floodFillNaive(x, y - 1, toFlood, color);
-    }
-  }
-
-  floodFillStack(x0, y0, toFlood, color) {
-    let tumpukan = [];
-    tumpukan.push({ x: x0, y: y0 });
-
-    while (tumpukan.length > 0) {
-      // ambil satu buah titik dari tumpukan
-      // cek titik tersebut bisa diwarna atau tidak
-      // kalau bisa warna, masukkan dalam tumpukkan titik sekitarnya
-
-      let titik_skrg = tumpukan.pop();
-      let index_skrg = 4 * (titik_skrg.x + titik_skrg.y * this.c_handler.width);
-
-      // console.info(titik_skrg);
-      let r1 = this.image_data.data[index_skrg];
-      let g1 = this.image_data.data[index_skrg + 1];
-      let b1 = this.image_data.data[index_skrg + 2];
-
-      if (r1 === toFlood.r && g1 === toFlood.g && b1 === toFlood.b) {
-        this.image_data.data[index_skrg] = color.r;
-        this.image_data.data[index_skrg + 1] = color.g;
-        this.image_data.data[index_skrg + 2] = color.b;
-        this.image_data.data[index_skrg + 3] = 255;
-
-        tumpukan.push({ x: titik_skrg.x + 1, y: titik_skrg.y });
-        tumpukan.push({ x: titik_skrg.x - 1, y: titik_skrg.y });
-        tumpukan.push({ x: titik_skrg.x, y: titik_skrg.y + 1 });
-        tumpukan.push({ x: titik_skrg.x, y: titik_skrg.y - 1 });
-      }
-    }
-  }
-
-  setengah_lingkaran_polar(xc, yc, radius, color, arah) {
-    let startTheta, endTheta;
-    if (arah === "atas") {
-      startTheta = Math.PI;
-      endTheta = 2 * Math.PI;
-    } else if (arah === "bawah") {
-      startTheta = 0;
-      endTheta = Math.PI;
-    } else if (arah === "kiri") {
-      startTheta = 0.5 * Math.PI;
-      endTheta = 1.5 * Math.PI;
-    } else if (arah === "kanan") {
-      startTheta = -0.5 * Math.PI;
-      endTheta = 0.5 * Math.PI;
-    } else {
-      throw new Error("Arah harus 'atas', 'bawah', 'kiri', atau 'kanan'");
-    }
-
-    let points = [{ x: xc, y: yc }];
-    for (let theta = startTheta; theta < endTheta; theta += 0.005) {
-      let x = xc + radius * Math.cos(theta);
-      let y = yc + radius * Math.sin(theta);
-      points.push({ x: Math.round(x), y: Math.round(y) });
-    }
-    this.polygon(points, color);
-  }
-
   tulisan(ukuran, font, warna, tulisan, koordinat) {
     this.ctx.font = `${ukuran}px ${font}`;
     this.ctx.fillStyle = `${warna}`;
@@ -227,7 +137,7 @@ export class ImageLib {
   rotasiArray(points, titik_pusat, sudut) {
     let hasil = [];
     points.forEach((e) => {
-      hasil.push(this.rotateFixedPoint(e, titik_pusat, sudut.x, sudut.y));
+      hasil.push(this.rotateFixedPoint(e, titik_pusat, sudut));
     });
 
     return hasil;
@@ -240,5 +150,32 @@ export class ImageLib {
     });
 
     return hasil;
+  }
+
+  translasiArray(points, tx, ty) {
+    let hasil = [];
+    points.forEach((point) => {
+      hasil.push(this.translasi(point, tx, ty));
+    });
+
+    return hasil;
+  }
+
+  gambarKotakInteraktif(points) {
+    this.ctx.clearRect(0, 0, this.c_handler.width, this.c_handler.height);
+    this.image_data = this.ctx.getImageData(0, 0, this.c_handler.width, this.c_handler.height);
+
+    this.polygon(points, { r: 255 });
+    this.draw();
+  }
+
+  titikPusat(points) {
+    let x = 0;
+    let y = 0;
+    points.forEach((e) => {
+      x += e.x;
+      y += e.y;
+    });
+    return { x: x / points.length, y: y / points.length };
   }
 }
