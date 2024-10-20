@@ -1,5 +1,5 @@
 ///////////////////////////////////////
-/////// Pertemuan 5 - Teori /////////
+/////// Pertemuan 5 - Prak /////////
 /////////////////////////////////////
 
 export class ImageLib {
@@ -87,7 +87,44 @@ export class ImageLib {
       let x = xc + radius * Math.cos(theta);
       let y = yc + radius * Math.sin(theta);
 
-      this.titik(Math.ceil(x), Math.ceil(y), color);
+      this.titik(Math.round(x), Math.round(y), color);
+    }
+  }
+
+  lingkaranIsi(xc, yc, radius, color) {
+    for (let theta = 0; theta < Math.PI * 2; theta += 0.01) {
+      let x = xc + radius * Math.cos(theta);
+      let y = yc + radius * Math.sin(theta);
+
+      this.titik(Math.round(x), Math.round(y), color);
+    }
+
+    this.floodFillStack(xc, yc, { r: 0, g: 0, b: 0 }, color);
+  }
+
+  floodFillStack(x0, y0, toFlood, color) {
+    let tumpukan = [];
+    tumpukan.push({ x: x0, y: y0 });
+
+    while (tumpukan.length > 0) {
+      let titik_skrg = tumpukan.pop();
+      let index_skrg = 4 * (titik_skrg.x + titik_skrg.y * this.c_handler.width);
+
+      let r1 = this.image_data.data[index_skrg];
+      let g1 = this.image_data.data[index_skrg + 1];
+      let b1 = this.image_data.data[index_skrg + 2];
+
+      if (r1 === toFlood.r && g1 === toFlood.g && b1 === toFlood.b) {
+        this.image_data.data[index_skrg] = color.r;
+        this.image_data.data[index_skrg + 1] = color.g;
+        this.image_data.data[index_skrg + 2] = color.b;
+        this.image_data.data[index_skrg + 3] = 255;
+
+        tumpukan.push({ x: titik_skrg.x + 1, y: titik_skrg.y });
+        tumpukan.push({ x: titik_skrg.x - 1, y: titik_skrg.y });
+        tumpukan.push({ x: titik_skrg.x, y: titik_skrg.y + 1 });
+        tumpukan.push({ x: titik_skrg.x, y: titik_skrg.y - 1 });
+      }
     }
   }
 
@@ -177,5 +214,62 @@ export class ImageLib {
       y += e.y;
     });
     return { x: x / points.length, y: y / points.length };
+  }
+
+  clearCanvas() {
+    this.ctx.clearRect(0, 0, this.c_handler.width, this.c_handler.height);
+    this.image_data = this.ctx.getImageData(0, 0, this.c_handler.width, this.c_handler.height);
+  }
+
+  // bolaMantul(x, y, radius, color, dx, dy) {
+  //   const updateBallPosition = () => {
+  //     let posisi = this.translasi({ x, y }, dx, dy);
+  //     x = posisi.x;
+  //     y = posisi.y;
+
+  //     if (x + radius > this.c_handler.width || x - radius < 0) {
+  //       dx = -dx + (Math.random() - 0.5) * 2;
+  //     }
+  //     if (y + radius > this.c_handler.height || y - radius < 0) {
+  //       dy = -dy + (Math.random() - 0.5) * 2;
+  //     }
+
+  //     this.clearCanvas();
+  //     console.log(`Menggambar bola di: ${x}, ${y}`);
+  //     this.lingkaranIsi(Math.floor(x), Math.floor(y), radius, color);
+  //     this.draw();
+
+  //     requestAnimationFrame(updateBallPosition);
+  //   };
+
+  //   updateBallPosition();
+  // }
+
+  bolaMantul(balls) {
+    const updateBallPosition = () => {
+      balls.forEach((ball) => {
+        let posisi = this.translasi({ x: ball.x, y: ball.y }, ball.dx, ball.dy);
+        ball.x = posisi.x;
+        ball.y = posisi.y;
+
+        if (ball.x + ball.radius > this.c_handler.width || ball.x - ball.radius < 0) {
+          ball.dx = -ball.dx + (Math.random() - 0.5) * 2;
+        }
+        if (ball.y + ball.radius > this.c_handler.height || ball.y - ball.radius < 0) {
+          ball.dy = -ball.dy + (Math.random() - 0.5) * 2;
+        }
+      });
+
+      this.clearCanvas();
+      balls.forEach((ball) => {
+        console.log(`Menggambar bola di: ${ball.x}, ${ball.y}`);
+        this.lingkaranIsi(Math.floor(ball.x), Math.floor(ball.y), ball.radius, ball.color);
+      });
+      this.draw();
+
+      requestAnimationFrame(updateBallPosition);
+    };
+
+    updateBallPosition();
   }
 }
