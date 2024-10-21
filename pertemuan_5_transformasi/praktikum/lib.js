@@ -262,7 +262,7 @@ export class ImageLib {
 
       this.clearCanvas();
       balls.forEach((ball) => {
-        console.log(`Menggambar bola di: ${ball.x}, ${ball.y}`);
+        // console.log(`Menggambar bola di: ${ball.x}, ${ball.y}`);
         this.lingkaranIsi(Math.floor(ball.x), Math.floor(ball.y), ball.radius, ball.color);
       });
       this.draw();
@@ -271,5 +271,103 @@ export class ImageLib {
     };
 
     updateBallPosition();
+  }
+
+  bunga(posisi, radius, n, color) {
+    let { xc, yc } = posisi;
+
+    for (let theta = 0; theta < Math.PI * 2; theta += 0.001) {
+      let x = xc + radius * Math.cos(n * theta) * Math.cos(theta);
+      let y = yc + radius * Math.cos(n * theta) * Math.sin(theta);
+      this.titik(Math.ceil(x), Math.ceil(y), color);
+    }
+  }
+
+  oval(xc, yc, radius, color, color2) {
+    for (let theta = 0; theta < Math.PI * 2; theta += 0.01) {
+      let x = xc + radius * 2.5 * Math.cos(theta);
+      let y = yc + radius * 4 * Math.sin(theta);
+
+      this.titik(Math.round(x), Math.round(y), color);
+    }
+    this.floodFillStack(xc, yc, { r: 0, g: 0, b: 0 }, color2);
+  }
+
+  // Si prey dan predator
+  simulatorPreyPredator(jumlahPrey, jumlahPredator) {
+    let preys = [];
+    let predators = [];
+
+    for (let i = 0; i < jumlahPrey; i++) {
+      let prey = {
+        x: Math.random() * this.c_handler.width,
+        y: Math.random() * this.c_handler.height,
+        radius: 10,
+        color: { g: 120 },
+      };
+      preys.push(prey);
+    }
+
+    for (let i = 0; i < jumlahPredator; i++) {
+      let predator = {
+        x: Math.floor(Math.random() * this.c_handler.width),
+        y: Math.floor(Math.random() * this.c_handler.height),
+        radius: 10,
+        color: { r: 255 },
+        color2: { b: 255 },
+      };
+      predators.push(predator);
+    }
+
+    const ubahPosisi = () => {
+      preys.forEach((prey) => {
+        let dx = (Math.random() - 0.5) * 2;
+        let dy = (Math.random() - 0.5) * 2;
+        prey.x = Math.max(0, Math.min(this.c_handler.width, prey.x + dx));
+        prey.y = Math.max(0, Math.min(this.c_handler.height, prey.y + dy));
+      });
+
+      predators.forEach((predator) => {
+        let preyTerdekat = null;
+        let jarakTerdekat = Infinity;
+        preys.forEach((prey) => {
+          let jarak = Math.hypot(prey.x - predator.x, prey.y - predator.y);
+          if (jarak < jarakTerdekat) {
+            jarakTerdekat = jarak;
+            preyTerdekat = prey;
+          }
+        });
+
+        if (preyTerdekat) {
+          let dx = preyTerdekat.x - predator.x;
+          let dy = preyTerdekat.y - predator.y;
+          let magnitude = Math.hypot(dx, dy);
+          predator.x += dx / magnitude;
+          predator.y += dy / magnitude;
+
+          if (jarakTerdekat < predator.radius + preyTerdekat.radius) {
+            preys.splice(preys.indexOf(preyTerdekat), 1);
+          }
+        }
+      });
+      this.clearCanvas();
+
+      preys.forEach((prey) => {
+        this.bunga({ xc: prey.x, yc: prey.y }, prey.radius, 5, prey.color);
+      });
+
+      predators.forEach((predator) => {
+        this.oval(Math.floor(predator.x), Math.floor(predator.y), predator.radius, predator.color, predator.color2);
+      });
+
+      this.draw();
+
+      if (preys.length > 0) {
+        requestAnimationFrame(ubahPosisi);
+      } else {
+        alert("Semua prey telah tertangkap, simulasi selesai.");
+      }
+    };
+    ubahPosisi();
   }
 }

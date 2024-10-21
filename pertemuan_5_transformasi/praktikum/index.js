@@ -51,3 +51,7 @@ const updateSolarSystem = () => {
 };
 
 updateSolarSystem();
+
+// Nomor 3
+const lib3 = new ImageLib("my_canvas3");
+lib3.simulatorPreyPredator(15, 5);
