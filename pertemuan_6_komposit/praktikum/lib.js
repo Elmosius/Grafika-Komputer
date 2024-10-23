@@ -91,6 +91,43 @@ export class ImageLib {
     }
   }
 
+  lingkaranIsi(xc, yc, radius, color) {
+    for (let theta = 0; theta < Math.PI * 2; theta += 0.01) {
+      let x = xc + radius * Math.cos(theta);
+      let y = yc + radius * Math.sin(theta);
+
+      this.titik(Math.round(x), Math.round(y), color);
+    }
+
+    this.floodFillStack(xc, yc, { r: 0, g: 0, b: 0 }, color);
+  }
+
+  floodFillStack(x0, y0, toFlood, color) {
+    let tumpukan = [];
+    tumpukan.push({ x: x0, y: y0 });
+
+    while (tumpukan.length > 0) {
+      let titik_skrg = tumpukan.pop();
+      let index_skrg = 4 * (titik_skrg.x + titik_skrg.y * this.c_handler.width);
+
+      let r1 = this.image_data.data[index_skrg];
+      let g1 = this.image_data.data[index_skrg + 1];
+      let b1 = this.image_data.data[index_skrg + 2];
+
+      if (r1 === toFlood.r && g1 === toFlood.g && b1 === toFlood.b) {
+        this.image_data.data[index_skrg] = color.r;
+        this.image_data.data[index_skrg + 1] = color.g;
+        this.image_data.data[index_skrg + 2] = color.b;
+        this.image_data.data[index_skrg + 3] = 255;
+
+        tumpukan.push({ x: titik_skrg.x + 1, y: titik_skrg.y });
+        tumpukan.push({ x: titik_skrg.x - 1, y: titik_skrg.y });
+        tumpukan.push({ x: titik_skrg.x, y: titik_skrg.y + 1 });
+        tumpukan.push({ x: titik_skrg.x, y: titik_skrg.y - 1 });
+      }
+    }
+  }
+
   tulisan(ukuran, font, warna, tulisan, koordinat) {
     this.ctx.font = `${ukuran}px ${font}`;
     this.ctx.fillStyle = `${warna}`;

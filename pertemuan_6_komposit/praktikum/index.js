@@ -43,3 +43,61 @@ animasiRotasi();
 
 // Nomor 2
 const lib2 = new ImageLib("my_canvas2");
+
+let centerX = lib2.c_handler.width / 2;
+let centerY = lib2.c_handler.height / 2;
+let scaleFactor = 1;
+let matahariX = centerX;
+let matahariY = centerY;
+
+const planets = [
+  { orbitRadius: 50, planetRadius: 5, angle: Math.random() * Math.PI * 2, speed: 0.01, color: { r: 99, g: 99, b: 93 } },
+  { orbitRadius: 80, planetRadius: 10, angle: Math.random() * Math.PI * 2, speed: 0.01, color: { r: 255, g: 0, b: 0 } },
+  { orbitRadius: 200, planetRadius: 15, angle: Math.random() * Math.PI * 2, speed: 0.008, color: { r: 0, g: 255, b: 0 } },
+  { orbitRadius: 150, planetRadius: 20, angle: Math.random() * Math.PI * 2, speed: 0.005, color: { r: 0, g: 0, b: 255 } },
+  { orbitRadius: 300, planetRadius: 10, angle: Math.random() * Math.PI * 2, speed: 0.01, color: { r: 123, g: 123, b: 255 } },
+  { orbitRadius: 500, planetRadius: 20, angle: Math.random() * Math.PI * 2, speed: 0.004, color: { r: 255, g: 255, b: 255 } },
+];
+
+const updateSolarSystem = () => {
+  lib2.clear();
+
+  lib2.lingkaranIsi(matahariX, matahariY, 30 * scaleFactor, { r: 255, g: 255, b: 84 });
+
+  planets.forEach((planet) => {
+    planet.angle += planet.speed;
+
+    const rotasiMatriks = TransformasiMatriks.rotasiFixPoint(matahariX, matahariY, planet.angle);
+    let posisiPlanet = { x: matahariX + planet.orbitRadius * scaleFactor, y: matahariY };
+    let planetBaru = TransformasiMatriks.transformasiTitik(posisiPlanet, rotasiMatriks);
+
+    // Biar ga nembus kiri ke kanans
+    if (planetBaru.x - planet.planetRadius * scaleFactor < 0 || planetBaru.x + planet.planetRadius * scaleFactor > lib2.c_handler.width) {
+      return;
+    }
+
+    lib2.lingkaranIsi(Math.round(planetBaru.x), Math.round(planetBaru.y), planet.planetRadius * scaleFactor, planet.color);
+  });
+
+  lib2.draw();
+  requestAnimationFrame(updateSolarSystem);
+};
+
+// Tombol tombolan
+document.getElementById("geserX").addEventListener("input", (e) => {
+  matahariX = centerX + e.target.value * 2;
+});
+
+document.getElementById("geserY").addEventListener("input", (e) => {
+  matahariY = centerY + e.target.value * 2;
+});
+
+document.getElementById("in").addEventListener("click", () => {
+  scaleFactor *= 1.1;
+});
+
+document.getElementById("out").addEventListener("click", () => {
+  scaleFactor /= 1.1;
+});
+
+updateSolarSystem();

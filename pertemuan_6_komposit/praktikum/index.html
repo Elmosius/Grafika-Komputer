@@ -64,7 +64,7 @@
             <h6>Pergeseran Matahari(X):</h6>
           </div>
           <div class="col-md-5">
-            <input type="range" class="form-range" id="geserX" value="50" step="0.01" />
+            <input type="range" class="form-range" id="geserX" value="0" min="-100" max="100" step="2" />
           </div>
         </div>
 
@@ -73,13 +73,13 @@
             <h6>Pergeseran Matahari(Y):</h6>
           </div>
           <div class="col-md-5">
-            <input type="range" class="form-range" id="geserY" value="50" step="0.01" />
+            <input type="range" class="form-range" id="geserY" value="0" min="-100" max="100" step="2" />
           </div>
         </div>
 
         <div class="col-md">
-          <button type="button" class="btn btn-primary">Zoom In</button>
-          <button type="button" class="btn btn-primary">Zoom Out</button>
+          <button type="button" class="btn btn-primary" id="in">Zoom In</button>
+          <button type="button" class="btn btn-primary" id="out">Zoom Out</button>
         </div>
       </div>
     </div>
