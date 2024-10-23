@@ -78,7 +78,7 @@ export class ImageLib {
     let xLast = arr[arr.length - 1].x;
     let yLast = arr[arr.length - 1].y;
 
-    console.info(xFirst, yFirst, xLast, yLast);
+    // console.info(xFirst, yFirst, xLast, yLast);
     this.garis(xFirst, yFirst, xLast, yLast, color);
   }
 
@@ -100,5 +100,25 @@ export class ImageLib {
   clear() {
     this.ctx.clearRect(0, 0, this.c_handler.width, this.c_handler.height);
     this.image_data = this.ctx.getImageData(0, 0, this.c_handler.width, this.c_handler.height);
+  }
+
+  segi_banyak(xc, yc, radius, sisi, color) {
+    const angle = (2 * Math.PI) / sisi;
+
+    let points = [];
+
+    for (let i = 0; i < sisi; i++) {
+      const x = xc + radius * Math.cos(i * angle);
+      const y = yc + radius * Math.sin(i * angle);
+      points.push({ x: Math.ceil(x), y: Math.ceil(y) });
+    }
+
+    for (let i = 0; i < sisi; i++) {
+      const start = points[i];
+      const end = points[(i + 1) % sisi];
+      this.garis(start.x, start.y, end.x, end.y, color);
+    }
+
+    return points;
   }
 }
