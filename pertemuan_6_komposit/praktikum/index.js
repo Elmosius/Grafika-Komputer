@@ -34,7 +34,7 @@ const animasiRotasi = () => {
   lib.clear();
   let m = tm.rotasiFixPoint(lib.c_handler.width / 2, lib.c_handler.height / 2, rotasi);
   segiBefore = tm.transformasiArray(segiBefore, m);
-  lib.polygon(segiBefore, 0);
+  lib.polygon(segiBefore, { b: 255 });
   lib.draw();
   requestAnimationFrame(animasiRotasi);
 };
