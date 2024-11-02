@@ -8,6 +8,7 @@ Selamat datang di repositori saya! Di sini, Anda akan menemukan rekap belajar sa
 - 🌈 Pertemuan 4 - FloodFill Algorithm
 - 🪞 Pertemuan 5 - Transformasi 2D
 - Ⓜ️ Pertemuan 6 - Transformasi Komposit
+- 🔥 Project UTS - [Boleh dilihat hehe](https://github.com/Elmosius/UI-Animation)
 - 🔜 Coming Soon
 
 Dalam repositori ini, Anda akan menemukan semua kode dan dokumen yang saya kerjakan selama proses belajar. Jika Anda memiliki pertanyaan atau saran, jangan ragu untuk menghubungi saya.
