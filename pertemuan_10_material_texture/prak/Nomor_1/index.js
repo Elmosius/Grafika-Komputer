@@ -22,21 +22,69 @@ let cam = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight
 let renderer = new THREE.WebGLRenderer();
 /* ============================================= */
 
-const geo = new THREE.BoxGeometry(1, 1, 1);
-const number1 = new THREE.TextureLoader().load("../textures/1.jpg");
+const geo = new THREE.BufferGeometry();
 
 const numbers_texture = [];
 for (let i = 1; i < 21; i++) {
   numbers_texture.push(new THREE.TextureLoader().load(`../textures/${i}.jpg`));
 }
 
+// prettier-ignore
+const vertices = new Float32Array([
+
+  // Segilima 1
+  // 1
+  -2.0, 1.0, 0.0,
+  -1.0,1.0,0.0,
+  -1.5,2.0,-0.5,
+
+  // 2
+  -1.0,1.0,0.0,
+  -0.5,2.0,0.0,
+  -1.5,2.0,-0.5,
+
+  // 3
+  -0.5,2.0,0.0,
+  -1.5,3.0,0.0,
+  -1.5,2.0,-0.5,
+
+  // 4
+  -1.5,3.0,0.0,
+  -2.5,2.0,0.0,
+  -1.5,2.0,-0.5,
+
+  // 5
+  -2.5,2.0,0.0,
+  -2.0, 1.0, 0.0,
+  -1.5,2.0,-0.5,
+  
+
+  // 6
+
+]);
+
 const mat_array = [];
 numbers_texture.forEach((e, i) => {
-  mat_array.push(new THREE.MeshBasicMaterial({ map: numbers_texture[i] }));
-}),
-  console.info(mat_array[0]);
+  mat_array.push(new THREE.MeshBasicMaterial({ map: numbers_texture[i], side: THREE.DoubleSide }));
+});
 
-let mesh = new THREE.Mesh(geo, mat_array);
+console.info(mat_array[0]);
+
+// prettier-ignore
+const uvs = new Float32Array([
+  0.0, 0.0,
+  2.0, 0.0,
+  1.0, 2.0,
+ 
+]);
+
+// prettier - ignore;
+// geo.setIndex([0, 1, 2]);
+
+geo.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
+geo.setAttribute("uv", new THREE.BufferAttribute(uvs, 2));
+let mesh = new THREE.Mesh(geo, mat_array[0]);
+mesh.position.set(1, -1, 0);
 scene.add(mesh);
 
 /* ============================================= */
@@ -54,8 +102,8 @@ window.addEventListener("resize", () => {
 function draw() {
   controls.update();
   requestAnimationFrame(draw);
-  mesh.rotation.x += 0.01;
-  mesh.rotation.y += 0.01;
+  // mesh.rotation.x += 0.01;
+  // mesh.rotation.y += 0.01;
 
   renderer.render(scene, cam);
 }
