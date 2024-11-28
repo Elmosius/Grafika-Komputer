@@ -17,42 +17,45 @@ let scene = new THREE.Scene();
     > Aspect Ratio : Rasio antara lebar dan tinggi layar
     > Near : Jarak terdekat yang bisa dilihat oleh camera
     > Far : Jarak terjauh yang bisa dilihat oleh camera
-
 */
 let cam = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
 let renderer = new THREE.WebGLRenderer();
 /* ============================================= */
 
-// box 1
-const geo = new THREE.BoxGeometry(1, 1, 1);
-const brick_texture = new THREE.TextureLoader().load("./textures/brick.jpg");
-const brick2_texture = new THREE.TextureLoader().load("./textures/brick2.jpg");
-const dice_texture = new THREE.TextureLoader().load("./textures/dice.jpg");
-const stone_texture = new THREE.TextureLoader().load("./textures/stone.jpg");
+const geo = new THREE.BufferGeometry();
+const numbers_texture = [
+  new THREE.TextureLoader().load("../textures/0.jpg"),
+  new THREE.TextureLoader().load("../textures/1.jpg"),
+  new THREE.TextureLoader().load("../textures/2.jpg"),
+  new THREE.TextureLoader().load("../textures/3.jpg"),
+  new THREE.TextureLoader().load("../textures/4.jpg"),
+  new THREE.TextureLoader().load("../textures/5.jpg"),
+  new THREE.TextureLoader().load("../textures/6.jpg"),
+  new THREE.TextureLoader().load("../textures/7.jpg"),
+  new THREE.TextureLoader().load("../textures/8.jpg"),
+  new THREE.TextureLoader().load("../textures/9.jpg"),
+  new THREE.TextureLoader().load("../textures/10.jpg"),
+  new THREE.TextureLoader().load("../textures/11.jpg"),
+  new THREE.TextureLoader().load("../textures/12.jpg"),
+  new THREE.TextureLoader().load("../textures/13.jpg"),
+  new THREE.TextureLoader().load("../textures/14.jpg"),
+  new THREE.TextureLoader().load("../textures/15.jpg"),
+  new THREE.TextureLoader().load("../textures/16.jpg"),
+  new THREE.TextureLoader().load("../textures/17.jpg"),
+  new THREE.TextureLoader().load("../textures/18.jpg"),
+  new THREE.TextureLoader().load("../textures/19.jpg"),
+  new THREE.TextureLoader().load("../textures/20.jpg"),
+];
 
-const mat = new THREE.MeshBasicMaterial({ map: brick_texture });
+const vertices = new Float32Array([]);
+const mat_array = [];
+const uvs = new Float32Array([]);
+geo.setIndex([]);
+
+geo.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
+geo.setAttribute("uv", new THREE.BufferAttribute(uvs, 2));
 let mesh = new THREE.Mesh(geo, mat);
 scene.add(mesh);
-
-// box 2
-let light1 = new THREE.PointLight(0xffffff, 1);
-light1.position.set(1, 1, 1);
-scene.add(light1);
-
-let light2 = new THREE.PointLight(0xffffff, 1);
-light2.position.set(3, 1, 1);
-scene.add(light2);
-
-const mat2 = new THREE.MeshLambertMaterial({ map: brick_texture, alphaMap: dice_texture, transparent: true, side: THREE.DoubleSide });
-let mesh2 = new THREE.Mesh(geo, mat2);
-mesh2.position.set(2, 0, 0);
-scene.add(mesh2);
-
-// box 3
-const mat3 = new THREE.MeshPhongMaterial({ map: brick_texture, shininess: 100, bumpMap: stone_texture, bumpScale: 1 });
-let mesh3 = new THREE.Mesh(geo, mat3);
-mesh3.position.set(4, 0, 0);
-scene.add(mesh3);
 
 /* ============================================= */
 cam.position.z = 5;
@@ -72,11 +75,6 @@ function draw() {
   mesh.rotation.x += 0.01;
   mesh.rotation.y += 0.01;
 
-  mesh2.rotation.x += 0.01;
-  mesh2.rotation.y += 0.01;
-
-  mesh3.rotation.x += 0.01;
-  mesh3.rotation.y += 0.01;
   renderer.render(scene, cam);
 }
 

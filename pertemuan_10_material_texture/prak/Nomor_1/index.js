@@ -17,23 +17,27 @@ let scene = new THREE.Scene();
     > Aspect Ratio : Rasio antara lebar dan tinggi layar
     > Near : Jarak terdekat yang bisa dilihat oleh camera
     > Far : Jarak terjauh yang bisa dilihat oleh camera
-
 */
 let cam = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
 let renderer = new THREE.WebGLRenderer();
 /* ============================================= */
 
-// box 1
 const geo = new THREE.BoxGeometry(1, 1, 1);
-const brick_texture = new THREE.TextureLoader().load("./textures/brick.jpg");
-const brick2_texture = new THREE.TextureLoader().load("./textures/brick2.jpg");
-const dice_texture = new THREE.TextureLoader().load("./textures/dice.jpg");
-const stone_texture = new THREE.TextureLoader().load("./textures/stone.jpg");
+const number1 = new THREE.TextureLoader().load("../textures/1.jpg");
 
-const mat = new THREE.MeshBasicMaterial({ map: brick_texture });
-let mesh = new THREE.Mesh(geo, mat);
+const numbers_texture = [];
+for (let i = 1; i < 21; i++) {
+  numbers_texture.push(new THREE.TextureLoader().load(`../textures/${i}.jpg`));
+}
+
+const mat_array = [];
+numbers_texture.forEach((e, i) => {
+  mat_array.push(new THREE.MeshBasicMaterial({ map: numbers_texture[i] }));
+}),
+  console.info(mat_array[0]);
+
+let mesh = new THREE.Mesh(geo, mat_array);
 scene.add(mesh);
-
 
 /* ============================================= */
 cam.position.z = 5;
@@ -53,11 +57,6 @@ function draw() {
   mesh.rotation.x += 0.01;
   mesh.rotation.y += 0.01;
 
-  mesh2.rotation.x += 0.01;
-  mesh2.rotation.y += 0.01;
-
-  mesh3.rotation.x += 0.01;
-  mesh3.rotation.y += 0.01;
   renderer.render(scene, cam);
 }
 
