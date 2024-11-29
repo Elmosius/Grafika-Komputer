@@ -22,6 +22,7 @@ let cam = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight
 let renderer = new THREE.WebGLRenderer();
 /* ============================================= */
 
+const moonTexture = new THREE.TextureLoader().load("../textures/moon.jpg");
 const geo = new THREE.BufferGeometry();
 
 // prettier-ignore
@@ -98,11 +99,6 @@ const vertices = new Float32Array([
 ]);
 
 // prettier-ignore
-// const uvs = new Float32Array([
-
-// ]);
-
-// prettier-ignore
 geo.setIndex([
 // bintang depan
 0, 1, 2,
@@ -171,15 +167,84 @@ geo.setIndex([
 ]);
 
 geo.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
-// geo.setAttribute("uv", new THREE.BufferAttribute(uvs, 2));
-const mat = new THREE.MeshBasicMaterial({ color: 0xffff00, side: THREE.DoubleSide });
-let mesh = new THREE.Mesh(geo, mat);
-mesh.position.set(-2, -2, 0);
-scene.add(mesh);
+geo.center();
 
-let light1 = new THREE.PointLight(0xffffff, 1);
-light1.position.set(-2, -2, -2);
-scene.add(light1);
+// prettier-ignore
+const uvs = new Float32Array([
+  0.5, 1,
+  0, 0,
+  1, 0,
+
+  0.5, 1,
+  0, 0,
+  1, 0,
+
+  0.5, 1,
+  0, 0,
+  1, 0,
+
+  0.5, 1,
+  0, 0,
+  1, 0,
+
+  0.5, 1,
+  0, 0,
+  1, 0,
+
+  0.5, 1,
+  0, 0,
+  1, 0,
+
+  0.5, 1,
+  0, 0,
+  1, 0,
+
+  0.5, 1,
+  0, 0,
+  1, 0,
+
+  0.5, 1,
+  0, 0,
+  1, 0,
+
+  0.5, 1,
+  0, 0,
+  1, 0,
+
+  0.5, 1,
+  0, 0,
+  1, 0,
+
+  0.5, 1,
+  0, 0,
+  1, 0,
+
+  0.5, 1,
+  0, 0,
+  1, 0,
+
+  0.5, 1,
+  0, 0,
+  1, 0,
+
+  0.5, 1,
+  0, 0,
+  1, 0,
+
+  0.5, 1,
+  0, 0,
+  1, 0,
+]);
+
+geo.setAttribute("uv", new THREE.BufferAttribute(uvs, 2));
+const mat = new THREE.MeshBasicMaterial({
+  color: 0xffd700,
+  side: THREE.DoubleSide,
+  // wireframe: true,
+  map: moonTexture,
+});
+let mesh = new THREE.Mesh(geo, mat);
+scene.add(mesh);
 
 /* ============================================= */
 cam.position.z = 10;
@@ -196,9 +261,8 @@ window.addEventListener("resize", () => {
 function draw() {
   controls.update();
   requestAnimationFrame(draw);
-  mesh.rotation.x += 0.01;
+  mesh.rotation.x += 0.03;
   mesh.rotation.y += 0.01;
-
   renderer.render(scene, cam);
 }
 

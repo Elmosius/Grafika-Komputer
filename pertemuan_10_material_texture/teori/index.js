@@ -55,7 +55,7 @@ mesh2.position.set(2, 0, 0);
 scene.add(mesh2);
 
 // box 3
-const mat3 = new THREE.MeshPhongMaterial({ map: brick_texture, shininess: 100, bumpMap: stone_texture, bumpScale: 1 });
+const mat3 = new THREE.MeshPhongMaterial({ color: 0xffff00, map: brick_texture, shininess: 100, bumpMap: stone_texture, bumpScale: 1 });
 let mesh3 = new THREE.Mesh(geo, mat3);
 mesh3.position.set(4, 0, 0);
 scene.add(mesh3);

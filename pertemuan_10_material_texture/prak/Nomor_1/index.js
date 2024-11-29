@@ -156,7 +156,7 @@ const vertices = new Float32Array([
 
 const mat_array = [];
 numbers_texture.forEach((e) => {
-  mat_array.push(new THREE.MeshBasicMaterial({ map: e, side: THREE.DoubleSide, shininess: 100 }));
+  mat_array.push(new THREE.MeshBasicMaterial({ map: e, side: THREE.DoubleSide }));
 });
 
 const meshes = [];
