@@ -31,41 +31,121 @@ for (let i = 1; i < 21; i++) {
 
 // prettier-ignore
 const vertices = new Float32Array([
+  // tengah
+  // 1 
+  1,  1.618,  0,  
+  -1,  1.618,  0, 
+  0,  1,  1.618,   
 
-  // Segilima 1
-  // 1
-  -2.0, 1.0, 0.0,
-  -1.0,1.0,0.0,
-  -1.5,2.0,-0.5,
+  //  kiri
+ //  2
+-1,  1.618,  0,  
+-1.618,  0,  1,  
+0,  1,  1.618,  
 
-  // 2
-  -1.0,1.0,0.0,
-  -0.5,2.0,0.0,
-  -1.5,2.0,-0.5,
-
+  // kanan
   // 3
-  -0.5,2.0,0.0,
-  -1.5,3.0,0.0,
-  -1.5,2.0,-0.5,
+  1,  1.618,  0,   
+  0,  1,  1.618,   
+  1.618,  0,  1,   
 
+  // atas
   // 4
-  -1.5,3.0,0.0,
-  -2.5,2.0,0.0,
-  -1.5,2.0,-0.5,
-
-  // 5
-  -2.5,2.0,0.0,
-  -2.0, 1.0, 0.0,
-  -1.5,2.0,-0.5,
+  1,  1.618,  0,   
+  -1,  1.618,  0,  
+  0,  1, -1.618,   
   
+  // atas kiri
+  -1,  1.618,  0,   
+  -1.618,  0, -1,   
+  0,  1, -1.618,  
 
-  // 6
+  // atas kanan 
+  1.618,  0, -1,   
+  1,  1.618,  0,   
+  0,  1, -1.618,   
 
+  // atas belakang kiri
+  -1.618,  0, -1,
+  0, -1, -1.618,
+  0,  1, -1.618,
+
+  // Atas belakang kanan
+  1.618,  0, -1,
+  0, -1, -1.618,
+  0,  1, -1.618,
+
+   // Bawah depan kiri
+  // 9
+  -1.618,  0,  1,
+  -1, -1.618,  0,
+  0, -1,  1.618,
+
+  // Bawah depan kanan
+  // 10
+  1.618,  0,  1,
+  1, -1.618,  0,
+  0, -1,  1.618,
+
+   // Tengah samping kiri
+  // 11
+  -1.618,  0,  1,
+  -1, -1.618,  0,
+  -1.618,  0, -1,
+
+  // Tengah samping kanan
+  // 12
+  1.618,  0,  1,
+  1, -1.618,  0,
+  1.618,  0, -1,
+
+  // tengah belakang kiri
+  // 13
+  -1.618,  0, -1,
+  -1, -1.618,  0,
+  0, -1, -1.618,
+
+  // tengah belakang kanan
+  // 14
+  1.618,  0, -1,
+  1, -1.618,  0,
+  0, -1, -1.618,
+
+  // tengah bawah 
+  // 15
+  -1, -1.618,  0,
+  0, -1,  1.618,
+  1, -1.618,  0,
+
+  // tengah belakang
+  0, -1, -1.618,
+  -1, -1.618,  0,
+  1, -1.618,  0,
+
+  // samping kiri
+  -1,  1.618,  0,  
+  -1.618,  0,  1,  
+  -1.618,  0, -1, 
+
+  // samping kanan
+  1,  1.618,  0,
+  1.618,  0,  1,
+  1.618,  0, -1,
+  
+  // bawah kiri
+  0,  1,  1.618,   
+  -1.618,  0,  1,  
+  0, -1,  1.618,
+
+  // bawah kanan
+  0,  1,  1.618,
+  1.618,  0,  1,
+  0, -1,  1.618,
 ]);
 
 const mat_array = [];
 numbers_texture.forEach((e, i) => {
-  mat_array.push(new THREE.MeshBasicMaterial({ map: numbers_texture[i], side: THREE.DoubleSide }));
+  mat_array.push(new THREE.MeshBasicMaterial({ map: numbers_texture[i], side: THREE.DoubleSide, wireframe: true }));
 });
 
 console.info(mat_array[0]);
@@ -78,17 +158,14 @@ const uvs = new Float32Array([
  
 ]);
 
-// prettier - ignore;
-// geo.setIndex([0, 1, 2]);
-
 geo.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
 geo.setAttribute("uv", new THREE.BufferAttribute(uvs, 2));
 let mesh = new THREE.Mesh(geo, mat_array[0]);
-mesh.position.set(1, -1, 0);
+mesh.position.set(0, 0, -1);
 scene.add(mesh);
 
 /* ============================================= */
-cam.position.z = 5;
+cam.position.z = 10;
 document.body.appendChild(renderer.domElement);
 const controls = new OrbitControls(cam, renderer.domElement);
 renderer.setSize(window.innerWidth, window.innerHeight);
