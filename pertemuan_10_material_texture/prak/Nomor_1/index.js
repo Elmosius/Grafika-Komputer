@@ -22,8 +22,6 @@ let cam = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight
 let renderer = new THREE.WebGLRenderer();
 /* ============================================= */
 
-const geo = new THREE.BufferGeometry();
-
 const numbers_texture = [];
 for (let i = 1; i < 21; i++) {
   numbers_texture.push(new THREE.TextureLoader().load(`../textures/${i}.jpg`));
@@ -31,7 +29,6 @@ for (let i = 1; i < 21; i++) {
 
 // prettier-ignore
 const vertices = new Float32Array([
-
   // atas
   // 1
   1,  1.618,  0,   
@@ -50,17 +47,19 @@ const vertices = new Float32Array([
   0, -1, -1.618,
   0,  1, -1.618,
 
-  // atas kiri
+
+  // atas belakang kiri
   // 4
+  -1.618,  0, -1,
+  0, -1, -1.618,
+  0,  1, -1.618,
+
+  // atas kiri
+  // 5
   -1,  1.618,  0,   
   -1.618,  0, -1,   
   0,  1, -1.618,  
 
-  // atas belakang kiri
-  // 5
-  -1.618,  0, -1,
-  0, -1, -1.618,
-  0,  1, -1.618,
 
   // samping kiri
   // 6
@@ -81,7 +80,7 @@ const vertices = new Float32Array([
   0, -1, -1.618,
 
   // tengah belakang
-  // 9
+  // 9 
   0, -1, -1.618,
   -1, -1.618,  0,
   1, -1.618,  0,
@@ -153,29 +152,37 @@ const vertices = new Float32Array([
   -1,  1.618,  0, 
   0,  1,  1.618,   
 
-  
 ]);
 
 const mat_array = [];
-numbers_texture.forEach((e, i) => {
-  mat_array.push(new THREE.MeshBasicMaterial({ map: numbers_texture[i], side: THREE.DoubleSide, wireframe: true }));
+numbers_texture.forEach((e) => {
+  mat_array.push(new THREE.MeshBasicMaterial({ map: e, side: THREE.DoubleSide, shininess: 100 }));
 });
 
-console.info(mat_array[0]);
+const meshes = [];
+for (let i = 0; i < vertices.length / 9; i++) {
+  const geo = new THREE.BufferGeometry();
 
-// prettier-ignore
-const uvs = new Float32Array([
-  
-]);
+  // harus dibagi bagi
+  const segitiga = new Float32Array(vertices.slice(i * 9, i * 9 + 9));
+  geo.setAttribute("position", new THREE.BufferAttribute(segitiga, 3));
 
-geo.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
-geo.setAttribute("uv", new THREE.BufferAttribute(uvs, 2));
-let mesh = new THREE.Mesh(geo, mat_array[0]);
-mesh.position.set(0, 0, -1);
-scene.add(mesh);
+  // prettier-ignore
+  const uvs = new Float32Array([
+    -0.5,-0.5, 
+    1.5,0, 
+    0.5,1.5, 
+  ]);
+  geo.setAttribute("uv", new THREE.BufferAttribute(uvs, 2));
+
+  const mesh = new THREE.Mesh(geo, mat_array[i]);
+
+  scene.add(mesh);
+  meshes.push(mesh);
+}
 
 /* ============================================= */
-cam.position.z = 10;
+cam.position.z = 15;
 document.body.appendChild(renderer.domElement);
 const controls = new OrbitControls(cam, renderer.domElement);
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -188,11 +195,14 @@ window.addEventListener("resize", () => {
 
 function draw() {
   controls.update();
-  requestAnimationFrame(draw);
-  // mesh.rotation.x += 0.01;
-  // mesh.rotation.y += 0.01;
+
+  meshes.forEach((mesh) => {
+    mesh.rotation.x += 0.01;
+    mesh.rotation.y += 0.01;
+  });
 
   renderer.render(scene, cam);
+  requestAnimationFrame(draw);
 }
 
 draw();

@@ -40,8 +40,14 @@ light1.position.set(1, 1, 1);
 scene.add(light1);
 
 let light2 = new THREE.PointLight(0xffffff, 1);
-light2.position.set(3, 1, 1);
+light2.position.set(5, 1, 1);
 scene.add(light2);
+
+const lightHelper = new THREE.PointLightHelper(light1, 1);
+scene.add(lightHelper);
+
+const lightHelper2 = new THREE.PointLightHelper(light2, 1);
+scene.add(lightHelper2);
 
 const mat2 = new THREE.MeshLambertMaterial({ map: brick_texture, alphaMap: dice_texture, transparent: true, side: THREE.DoubleSide });
 let mesh2 = new THREE.Mesh(geo, mat2);
