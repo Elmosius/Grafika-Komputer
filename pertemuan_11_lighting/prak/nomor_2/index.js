@@ -19,6 +19,8 @@ renderer.shadowMap.enabled = true;
 document.body.appendChild(renderer.domElement);
 cam.position.y = 5;
 cam.position.x = 5;
+cam.position.z = 8;
+
 /* ============================================= */
 // material
 const stone_texture = new THREE.TextureLoader().load("../textures/stone/PavingStones143_2K-JPG_Color.jpg");
@@ -151,7 +153,7 @@ const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
 scene.add(ambientLight);
 
 const pointLight = new THREE.PointLight(0xff0000, 10, 50);
-pointLight.position.set(-3, 4, 0);
+pointLight.position.set(3, 4, 0);
 pointLight.castShadow = true;
 scene.add(pointLight);
 scene.add(new THREE.PointLightHelper(pointLight, 0.5));
@@ -214,7 +216,6 @@ autoRotateFolder
   });
 autoRotateFolder.open();
 /* ============================================= */
-cam.position.z = 6;
 window.addEventListener("resize", () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
   cam.aspect = window.innerWidth / window.innerHeight;
