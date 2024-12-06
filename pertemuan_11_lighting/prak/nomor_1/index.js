@@ -22,11 +22,12 @@ cam.position.y = 2;
 /* ============================================= */
 
 // material bolanya
-const rock_texture = new THREE.TextureLoader().load("../textures/rock/Rock051_4K-JPG_Color.jpg");
-const rock_normal = new THREE.TextureLoader().load("../textures/rock/Rock051_4K-JPG_NormalGL.jpg");
-const rock_metal = new THREE.TextureLoader().load("../textures/rock/Rock051_4K-JPG_Metalness.jpg");
-const rock_rough = new THREE.TextureLoader().load("../textures/rock/Rock051_4K-JPG_Roughness.jpg");
-const rock_ao = new THREE.TextureLoader().load("../textures/rock/Rock051_4K-JPG_AmbientOcclusion.jpg");
+const rock_texture = new THREE.TextureLoader().load("../textures/rock/Rock051_2K-JPG_Color.jpg");
+const rock_normal = new THREE.TextureLoader().load("../textures/rock/Rock051_2K-JPG_NormalGL.jpg");
+const rock_metal = new THREE.TextureLoader().load("../textures/rock/Rock051_2K-JPG_Metalness.jpg");
+const rock_rough = new THREE.TextureLoader().load("../textures/rock/Rock051_2K-JPG_Roughness.jpg");
+const rock_ao = new THREE.TextureLoader().load("../textures/rock/Rock051_2K-JPG_AmbientOcclusion.jpg");
+const rock_dis = new THREE.TextureLoader().load("../textures/rock/Rock051_2K-JPG_Displacement.jpg");
 
 // bola
 let sphereGeo = new THREE.SphereGeometry(0.5, 16, 16);
@@ -36,6 +37,8 @@ let sphereMat = new THREE.MeshStandardMaterial({
   roughness: rock_rough,
   metalness: rock_metal,
   aoMap: rock_ao,
+  displacementMap: rock_dis,
+  displacementScale: 0.2,
   metalness: 1,
   roughness: 0.5,
   aoMapIntensity: 0.5,
