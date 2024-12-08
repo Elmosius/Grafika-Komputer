@@ -12,7 +12,7 @@ export default class PlaneMesh {
     // brick_texture.wrapT = THREE.RepeatWrapping;
     // brick_texture.needsUpdate = true;
 
-    const plane_geo = new THREE.PlaneGeometry(25, 25, 50, 50);
+    const plane_geo = new THREE.PlaneGeometry(25, 25, 25, 25);
     const plane_mat = new THREE.MeshStandardMaterial({
       color: 0xffffff,
       transparent: true,
