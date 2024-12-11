@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "/node_modules/three/examples/jsm/controls/OrbitControls.js";
 import PlaneMesh from "./plane_mesh.js";
+import KeyboardHelper from "./keyboard.js";
 
 const scene = new THREE.Scene();
 const cam = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
@@ -14,11 +15,13 @@ document.body.appendChild(renderer.domElement);
 cam.position.z = 5;
 cam.position.y = 2;
 
+const controls = new OrbitControls(cam, renderer.domElement);
+/* ============================================= */
+
 renderer.setClearColor(0xffffff);
 const grid = new THREE.GridHelper(10, 10, 0xff0000, 0xffffff);
 scene.add(grid);
 
-const controls = new OrbitControls(cam, renderer.domElement);
 const brick_texture = new THREE.TextureLoader().load("./textures/brick/Bricks097_1K-JPG_Color.jpg");
 const brick_normal = new THREE.TextureLoader().load("./textures/brick/Bricks097_1K-JPG_NormalGL.jpg");
 const brick_ao = new THREE.TextureLoader().load("./textures/brick/Bricks097_1K-JPG_AmbientOcclusion.jpg");
@@ -35,7 +38,26 @@ const mesh = new THREE.Mesh(box_geo, geo_mat);
 mesh.position.set(0, 0.5, 0);
 mesh.castShadow = true;
 scene.add(mesh);
+
 const plane = new PlaneMesh(scene);
+
+// kontrol pakai keyboard
+const my_keyboard = new KeyboardHelper(scene);
+function process_keyboard() {
+  const speed = 0.05;
+  if (my_keyboard.keys["a"]) {
+    mesh.rotation.y -= speed;
+  }
+  if (my_keyboard.keys["d"]) {
+    mesh.rotation.y += speed;
+  }
+  if (my_keyboard.keys["w"]) {
+    mesh.rotation.x += speed;
+  }
+  if (my_keyboard.keys["s"]) {
+    mesh.rotation.x -= speed;
+  }
+}
 
 const ambient = new THREE.AmbientLight(0xffffff, 0.1);
 scene.add(ambient);
@@ -49,8 +71,9 @@ scene.add(sLight);
 const sLightHelper = new THREE.SpotLightHelper(sLight, 0xff0000);
 scene.add(sLightHelper);
 
-// const dLight = new THREE.DirectionalLight(0x00ff00, 0.09);
-// scene.add(dLight);
+const dLight = new THREE.DirectionalLight(0xffffff, 0.01);
+scene.add(dLight);
+/* ============================================= */
 
 window.addEventListener("resize", () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -60,6 +83,8 @@ window.addEventListener("resize", () => {
 
 function draw() {
   controls.update();
+  sLightHelper.update();
+  process_keyboard();
   requestAnimationFrame(draw);
   //   mesh.rotation.x += 0.01;
   //   mesh.rotation.y += 0.01;
