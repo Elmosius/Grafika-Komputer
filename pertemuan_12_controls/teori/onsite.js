@@ -43,6 +43,7 @@ const geo_mat = new THREE.MeshPhongMaterial({
 const mesh = new THREE.Mesh(box_geo, geo_mat);
 mesh.position.set(0, 0.5, 0);
 mesh.castShadow = true;
+mesh.name = "cube1";
 scene.add(mesh);
 
 const plane = new PlaneMesh(scene);
@@ -64,6 +65,24 @@ function process_keyboard() {
     mesh.rotation.x -= speed;
   }
 }
+
+// raycaster
+const raycaster = new THREE.Raycaster();
+const mouse = {};
+let selected;
+const arrow = new THREE.ArrowHelper(raycaster.ray)
+
+addEventListener("mousedown", (e) => {
+  mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+  raycaster.setFromCamera(mouse, cam);
+  let items = raycaster.intersectObjects(scene.children);
+  items.forEach((item) => {
+    if (item.object.name != "") {
+      selected = item.object;
+    }
+  });
+});
 
 const ambient = new THREE.AmbientLight(0xffffff, 0.1);
 scene.add(ambient);
@@ -88,6 +107,12 @@ window.addEventListener("resize", () => {
 });
 
 function draw() {
+  // coba rascasting
+  if (selected) {
+    selected.rotation.x += 0.01;
+    selected.rotation.y += 0.01;
+  }
+
   // controls.update();
   controls.update(clock.getDelta());
   sLightHelper.update();
