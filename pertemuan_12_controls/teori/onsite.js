@@ -1,7 +1,9 @@
 import * as THREE from "three";
-import { OrbitControls } from "/node_modules/three/examples/jsm/controls/OrbitControls.js";
 import PlaneMesh from "./plane_mesh.js";
 import KeyboardHelper from "./keyboard.js";
+import { FirstPersonControls } from "/node_modules/three/examples/jsm/controls/FirstPersonControls.js";
+import { OrbitControls } from "/node_modules/three/examples/jsm/controls/OrbitControls.js";
+import { TrackballControls } from "/node_modules/three/examples/jsm/controls/TrackballControls.js";
 
 const scene = new THREE.Scene();
 const cam = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
@@ -15,7 +17,11 @@ document.body.appendChild(renderer.domElement);
 cam.position.z = 5;
 cam.position.y = 2;
 
-const controls = new OrbitControls(cam, renderer.domElement);
+// const controls = new OrbitControls(cam, renderer.domElement);
+// const controls = new FirstPersonControls(cam, renderer.domElement);
+const controls = new TrackballControls(cam, renderer.domElement);
+const clock = new THREE.Clock();
+controls.lookSpeed = 0.1;
 /* ============================================= */
 
 renderer.setClearColor(0xffffff);
@@ -82,7 +88,8 @@ window.addEventListener("resize", () => {
 });
 
 function draw() {
-  controls.update();
+  // controls.update();
+  controls.update(clock.getDelta());
   sLightHelper.update();
   process_keyboard();
   requestAnimationFrame(draw);
