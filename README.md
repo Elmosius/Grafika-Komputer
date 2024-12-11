@@ -12,6 +12,7 @@ Selamat datang di repositori saya! Di sini, Anda akan menemukan rekap belajar sa
 -  🧊 Pertemuan 9 - Intro 3D (ThreeJS)
 -  🧱 Pertemuan 10 - Material & Texture
 - 💡 Pertemuan 11 - Lighting
+- 🎮 Pertemuan 12 - Kendali Keyboard dan Built-in Controls
 - 🔜 Coming Soon
 
 Dalam repositori ini, Anda akan menemukan semua kode dan dokumen yang saya kerjakan selama proses belajar. Jika Anda memiliki pertanyaan atau saran, jangan ragu untuk menghubungi saya.
