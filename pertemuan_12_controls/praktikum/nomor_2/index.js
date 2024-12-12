@@ -21,7 +21,7 @@ renderer.shadowMap.enabled = true;
 
 document.body.appendChild(renderer.domElement);
 
-cam.position.set(5, 5, 8);
+cam.position.set(5, 5, 10);
 const controls = new TrackballControls(cam, renderer.domElement);
 const clock = new THREE.Clock();
 /* ============================================= */
@@ -248,9 +248,9 @@ let selected;
 let posisiCamera = { x: cam.position.x, y: cam.position.y, z: cam.position.z };
 
 const focusOnMesh = (mesh) => {
-  const offset = 5;
+  const offset = 8;
 
-  cam.position.set(mesh.position.x, mesh.position.y + offset, mesh.position.z + offset);
+  cam.position.set(mesh.position.x + 2, mesh.position.y + offset, mesh.position.z + offset);
   controls.target.set(mesh.position.x, mesh.position.y, mesh.position.z);
   controls.update();
 
@@ -330,3 +330,5 @@ function draw() {
 draw();
 // Menggambar di rederer dunia 3d "scene" dengan menggunakan camera Cam
 renderer.render(scene, cam);
+
+alert('gerakkan kubus dengan keyboard, klik kubus untuk fokus, klik kanan untuk reset kamera. Lalu untuk menggerakkan kubus, tekan "WASD (catatan: kubus yang di gerakkan adalah kubus yang di klik)"');
