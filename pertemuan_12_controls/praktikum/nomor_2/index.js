@@ -15,8 +15,10 @@ scene.add(grid);
 renderer.setClearColor(0xffffff);
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
+
 renderer.shadowMap.type = THREE.BasicShadowMap;
 renderer.shadowMap.enabled = true;
+
 document.body.appendChild(renderer.domElement);
 cam.position.y = 5;
 cam.position.x = 5;

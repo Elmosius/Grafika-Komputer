@@ -21,6 +21,8 @@ let scene = new THREE.Scene();
 */
 let cam = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
 let renderer = new THREE.WebGLRenderer();
+renderer.shadowMap.type = THREE.BasicShadowMap;
+renderer.shadowMap.enabled = true;
 /* ============================================= */
 
 const numbers_texture = [];
@@ -157,17 +159,16 @@ const vertices = new Float32Array([
 
 const mat_array = [];
 numbers_texture.forEach((e) => {
-  mat_array.push(new THREE.MeshBasicMaterial({ map: e, side: THREE.DoubleSide }));
+  mat_array.push(new THREE.MeshPhongMaterial({ map: e, side: THREE.DoubleSide }));
 });
 
 const meshes = [];
 for (let i = 0; i < vertices.length / 9; i++) {
   const geo = new THREE.BufferGeometry();
-
   // harus dibagi bagi
   const segitiga = new Float32Array(vertices.slice(i * 9, i * 9 + 9));
   geo.setAttribute("position", new THREE.BufferAttribute(segitiga, 3));
-
+  geo.computeVertexNormals();
   // prettier-ignore
   const uvs = new Float32Array([
     -0.5,-0.5, 
@@ -177,13 +178,14 @@ for (let i = 0; i < vertices.length / 9; i++) {
   geo.setAttribute("uv", new THREE.BufferAttribute(uvs, 2));
 
   const mesh = new THREE.Mesh(geo, mat_array[i]);
+  mesh.castShadow = true;
 
   scene.add(mesh);
   meshes.push(mesh);
 }
 
 const my_keyboard = new KeyboardHelper(scene);
-function process_keyboard() {
+const process_keyboard = () => {
   const speed = 0.05;
 
   meshes.forEach((mesh) => {
@@ -200,7 +202,16 @@ function process_keyboard() {
       mesh.rotation.z += speed;
     }
   });
-}
+};
+
+// lampu
+const aLight = new THREE.AmbientLight(0xffffff, 0.5);
+scene.add(aLight);
+
+const pLight = new THREE.PointLight(0xffffff, 10, 50);
+pLight.position.set(0, 3, 0);
+pLight.castShadow = true;
+scene.add(new THREE.PointLightHelper(pLight, 0.5));
 
 /* ============================================= */
 cam.position.z = 15;
@@ -217,10 +228,10 @@ window.addEventListener("resize", () => {
 function draw() {
   controls.update();
   process_keyboard();
-  // meshes.forEach((mesh) => {
-  //   mesh.rotation.x += 0.01;
-  //   mesh.rotation.y += 0.01;
-  // });
+  meshes.forEach((mesh) => {
+    mesh.rotation.x += 0.01;
+    mesh.rotation.y += 0.01;
+  });
 
   renderer.render(scene, cam);
   requestAnimationFrame(draw);
