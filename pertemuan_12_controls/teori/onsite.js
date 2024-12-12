@@ -50,7 +50,7 @@ const plane = new PlaneMesh(scene);
 
 // kontrol pakai keyboard
 const my_keyboard = new KeyboardHelper(scene);
-function process_keyboard() {
+const process_keyboard = () => {
   const speed = 0.05;
   if (my_keyboard.keys["a"]) {
     mesh.rotation.y -= speed;
@@ -64,13 +64,12 @@ function process_keyboard() {
   if (my_keyboard.keys["s"]) {
     mesh.rotation.x -= speed;
   }
-}
+};
 
 // raycaster
 const raycaster = new THREE.Raycaster();
 const mouse = {};
 let selected;
-const arrow = new THREE.ArrowHelper(raycaster.ray)
 
 addEventListener("mousedown", (e) => {
   mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
