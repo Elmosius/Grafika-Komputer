@@ -1,6 +1,8 @@
 import * as THREE from "three";
+import * as dat from "dat.gui";
 import { OrbitControls } from "/node_modules/three/examples/jsm/controls/OrbitControls.js";
 import KeyboardHelper from "../keyboard.js";
+import PlaneMesh from "../plane_mesh.js";
 
 /*
     Scene : 
@@ -23,6 +25,10 @@ let cam = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight
 let renderer = new THREE.WebGLRenderer();
 renderer.shadowMap.type = THREE.BasicShadowMap;
 renderer.shadowMap.enabled = true;
+
+const grid = new THREE.GridHelper(100, 100, 0x0a0a0a, 0x00000);
+scene.add(grid);
+renderer.setClearColor(0xffffff);
 /* ============================================= */
 
 const numbers_texture = [];
@@ -178,43 +184,67 @@ for (let i = 0; i < vertices.length / 9; i++) {
   geo.setAttribute("uv", new THREE.BufferAttribute(uvs, 2));
 
   const mesh = new THREE.Mesh(geo, mat_array[i]);
+  mesh.position.set(0, 1.5, 0);
   mesh.castShadow = true;
 
   scene.add(mesh);
   meshes.push(mesh);
 }
 
+let plane = new PlaneMesh(scene);
+
 const my_keyboard = new KeyboardHelper(scene);
 const process_keyboard = () => {
-  const speed = 0.05;
+  const speed = 0.1;
 
   meshes.forEach((mesh) => {
     if (my_keyboard.keys["a"]) {
-      mesh.rotation.x -= speed;
+      mesh.position.x -= speed;
     }
     if (my_keyboard.keys["d"]) {
-      mesh.rotation.x += speed;
+      mesh.position.x += speed;
     }
     if (my_keyboard.keys["w"]) {
-      mesh.rotation.z -= speed;
+      mesh.position.z -= speed;
     }
     if (my_keyboard.keys["s"]) {
-      mesh.rotation.z += speed;
+      mesh.position.z += speed;
     }
   });
 };
 
 // lampu
-const aLight = new THREE.AmbientLight(0xffffff, 0.5);
+const aLight = new THREE.AmbientLight(0xffffff, 0);
 scene.add(aLight);
 
-const pLight = new THREE.PointLight(0xffffff, 10, 50);
-pLight.position.set(0, 3, 0);
+const pLight = new THREE.PointLight(0xffff00, 10, 50);
+pLight.position.set(0, 5, 0);
 pLight.castShadow = true;
+scene.add(pLight);
 scene.add(new THREE.PointLightHelper(pLight, 0.5));
 
+// gui
+const gui = new dat.GUI();
+
+const lightFolder = gui.addFolder("Lights");
+lightFolder.name = "Lighting";
+lightFolder.open();
+
+const ambientFolder = lightFolder.addFolder("Ambient Light");
+ambientFolder.addColor({ color: aLight.color.getHex() }, "color").onChange((color) => aLight.color.set(color));
+ambientFolder.add(aLight, "intensity", 0, 10, 0.1);
+ambientFolder.open();
+
+const pointFolder = lightFolder.addFolder("Point Light");
+pointFolder.addColor({ color: pLight.color.getHex() }, "color").onChange((color) => pLight.color.set(color));
+pointFolder.add(pLight.position, "x", -10, 10);
+pointFolder.add(pLight.position, "y", 0, 20);
+pointFolder.add(pLight.position, "z", -10, 10);
+pointFolder.add(pLight, "intensity", 0, 10, 0.1);
+pointFolder.open();
+
 /* ============================================= */
-cam.position.z = 15;
+cam.position.set(5, 5, 15);
 document.body.appendChild(renderer.domElement);
 const controls = new OrbitControls(cam, renderer.domElement);
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -229,8 +259,8 @@ function draw() {
   controls.update();
   process_keyboard();
   meshes.forEach((mesh) => {
-    mesh.rotation.x += 0.01;
-    mesh.rotation.y += 0.01;
+    mesh.rotation.x += 0.02;
+    mesh.rotation.y += 0.02;
   });
 
   renderer.render(scene, cam);

@@ -20,10 +20,8 @@ renderer.shadowMap.type = THREE.BasicShadowMap;
 renderer.shadowMap.enabled = true;
 
 document.body.appendChild(renderer.domElement);
-cam.position.y = 5;
-cam.position.x = 5;
-cam.position.z = 8;
 
+cam.position.set(5, 5, 8);
 const controls = new TrackballControls(cam, renderer.domElement);
 const clock = new THREE.Clock();
 /* ============================================= */
@@ -223,13 +221,11 @@ const lightFolder = gui.addFolder("Lights");
 lightFolder.name = "Lighting";
 lightFolder.open();
 
-// Ambient Light Controls
 const ambientFolder = lightFolder.addFolder("Ambient Light");
 ambientFolder.addColor({ color: ambientLight.color.getHex() }, "color").onChange((color) => ambientLight.color.set(color));
 ambientFolder.add(ambientLight, "intensity", 0, 10, 0.1);
 ambientFolder.open();
 
-// Point Light Controls
 const pointFolder = lightFolder.addFolder("Point Light");
 pointFolder.addColor({ color: pointLight.color.getHex() }, "color").onChange((color) => pointLight.color.set(color));
 pointFolder.add(pointLight.position, "x", -10, 10);
@@ -238,7 +234,6 @@ pointFolder.add(pointLight.position, "z", -10, 10);
 pointFolder.add(pointLight, "intensity", 0, 10, 0.1);
 pointFolder.open();
 
-// Spotlight Controls
 const spotFolder = lightFolder.addFolder("Spotlight");
 spotFolder.addColor({ color: spotLight.color.getHex() }, "color").onChange((color) => spotLight.color.set(color));
 spotFolder.add(spotLight, "intensity", 0, 10, 0.1);
