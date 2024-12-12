@@ -13,7 +13,7 @@ Selamat datang di repositori saya! Di sini, Anda akan menemukan rekap belajar sa
 -  🧱 Pertemuan 10 - Material & Texture
 - 💡 Pertemuan 11 - Lighting
 - 🎮 Pertemuan 12 - Kendali Keyboard & Built-in Controls & Raycasting mouse
-- 🔜 Coming Soon
+- 🔥 Project UAS -  [Boleh dilihat hehe](https://github.com/Elmosius/Flappy-Bird-3D)
 
 Dalam repositori ini, Anda akan menemukan semua kode dan dokumen yang saya kerjakan selama proses belajar. Jika Anda memiliki pertanyaan atau saran, jangan ragu untuk menghubungi saya.
 Terima kasih telah mengunjungi repositori ini!
